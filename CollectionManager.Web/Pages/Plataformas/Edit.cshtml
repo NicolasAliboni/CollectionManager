@@ -1,0 +1,30 @@
+﻿@page
+@model CollectionManager.Web.Pages.Plataformas.EditModel
+
+<h1>Editar Plataforma</h1>
+
+<form method="post">
+
+    <input type="hidden" asp-for="Plataforma.Id" />
+
+    <div class="mb-3">
+        <label asp-for="Plataforma.Nome" class="form-label"></label>
+
+        <input asp-for="Plataforma.Nome" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+
+    <a asp-page="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+    <button type="submit"
+            asp-page-handler="Delete"
+            class="btn btn-danger">
+        Excluir
+    </button>
+
+</form>

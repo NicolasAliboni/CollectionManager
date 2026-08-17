@@ -1,0 +1,35 @@
+@page
+@model CollectionManager.Web.Pages.Estados.IndexModel
+
+<h1>Estados</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">
+    Adicionar Estado
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var estado in Model.Estados)
+        {
+            <tr>
+                <td>@estado.Id</td>
+                <td>@estado.Nome</td>
+                <td>
+                    <a asp-page="Edit"
+                       asp-route-id="@estado.Id"
+                       class="btn btn-sm btn-secondary">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

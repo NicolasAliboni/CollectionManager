@@ -1,0 +1,35 @@
+﻿@page
+@model CollectionManager.Web.Pages.Plataformas.IndexModel
+
+<h1>Plataformas</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">
+    Adicionar Plataforma
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var plataforma in Model.Plataformas)
+        {
+            <tr>
+                <td>@plataforma.Id</td>
+                <td>@plataforma.Nome</td>
+                <td>
+                    <a asp-page="Edit"
+                       asp-route-id="@plataforma.Id"
+                       class="btn btn-sm btn-secondary">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

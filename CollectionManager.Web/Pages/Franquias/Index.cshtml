@@ -1,0 +1,35 @@
+﻿@page
+@model CollectionManager.Web.Pages.Franquias.IndexModel
+
+<h1>Franquias</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">
+    Adicionar Franquia
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var franquia in Model.Franquias)
+        {
+            <tr>
+                <td>@franquia.Id</td>
+                <td>@franquia.Nome</td>
+                <td>
+                    <a asp-page="Edit"
+                       asp-route-id="@franquia.Id"
+                       class="btn btn-sm btn-secondary">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

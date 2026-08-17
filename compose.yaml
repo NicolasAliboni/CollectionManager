@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: collectionmanager-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: collectionmanager
+      POSTGRES_USER: collectionmanager
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - collectionmanager_postgres_data:/var/lib/postgresql
+
+volumes:
+  collectionmanager_postgres_data:
