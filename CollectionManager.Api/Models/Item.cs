@@ -6,7 +6,7 @@
         public string Nome { get; set; } = string.Empty;
         public DateOnly DataLancamento { get; set; }
         public int EstadoId { get; set; }
-        public Estado Estado { get; set; } = null!;
+        public Estado? Estado { get; set; } = null!;
         public string? CodigoEAN { get; set; }
         public DateOnly DataAquisicao { get; set; }
         public decimal? ValorAquisicao { get; set; }
