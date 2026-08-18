@@ -1,0 +1,30 @@
+@page
+@model CollectionManager.Web.Pages.Editoras.CreateModel
+@using CollectionManager.Web.ViewModels
+
+<h1>Adicionar Editora</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Editora.Nome" class="form-label"></label>
+
+        <input asp-for="Editora.Nome" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Editora.Origem" class="form-label"></label>
+
+        <select asp-for="Editora.Origem"
+                asp-items="Html.GetEnumSelectList<OrigemEditora>()"
+                class="form-select">
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+
+    <a asp-page="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>

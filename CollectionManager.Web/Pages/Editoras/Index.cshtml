@@ -1,28 +1,30 @@
-﻿@page
-@model CollectionManager.Web.Pages.Franquias.IndexModel
+@page
+@model CollectionManager.Web.Pages.Editoras.IndexModel
 
-<h1>Franquias</h1>
+<h1>Editoras</h1>
 
 <a asp-page="Create" class="btn btn-primary mb-3">
-    Adicionar Franquia
+    Adicionar Editora
 </a>
 
 <table class="table">
     <thead>
         <tr>
             <th>Nome</th>
+            <th>Origem</th>
             <th>Ações</th>
         </tr>
     </thead>
 
     <tbody>
-        @foreach (var franquia in Model.Franquias)
+        @foreach (var editora in Model.Editoras)
         {
             <tr>
-                <td>@franquia.Nome</td>
+                <td>@editora.Nome</td>
+                <td>@editora.Origem</td>
                 <td>
                     <a asp-page="Edit"
-                       asp-route-id="@franquia.Id"
+                       asp-route-id="@editora.Id"
                        class="btn btn-sm btn-secondary">
                         Editar
                     </a>

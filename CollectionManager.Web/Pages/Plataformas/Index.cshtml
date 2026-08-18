@@ -10,7 +10,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Id</th>
             <th>Nome</th>
             <th>Ações</th>
         </tr>
@@ -20,7 +19,6 @@
         @foreach (var plataforma in Model.Plataformas)
         {
             <tr>
-                <td>@plataforma.Id</td>
                 <td>@plataforma.Nome</td>
                 <td>
                     <a asp-page="Edit"

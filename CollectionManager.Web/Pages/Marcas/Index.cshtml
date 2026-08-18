@@ -10,7 +10,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Id</th>
             <th>Nome</th>
             <th>Ações</th>
         </tr>
@@ -20,7 +19,6 @@
         @foreach (var marca in Model.Marcas)
         {
             <tr>
-                <td>@marca.Id</td>
                 <td>@marca.Nome</td>
                 <td>
                     <a asp-page="Edit"

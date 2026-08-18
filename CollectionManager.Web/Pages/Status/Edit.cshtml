@@ -1,0 +1,40 @@
+@page
+@model CollectionManager.Web.Pages.Status.EditModel
+@using CollectionManager.Web.ViewModels
+
+<h1>Editar Status</h1>
+
+<form method="post">
+
+    <input type="hidden" asp-for="Status.Id" />
+
+    <div class="mb-3">
+        <label asp-for="Status.Nome" class="form-label"></label>
+
+        <input asp-for="Status.Nome" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status.Tipo" class="form-label"></label>
+
+        <select asp-for="Status.Tipo"
+                asp-items="Html.GetEnumSelectList<TipoItem>()"
+                class="form-select">
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+
+    <a asp-page="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+    <button type="submit"
+            asp-page-handler="Delete"
+            class="btn btn-danger">
+        Excluir
+    </button>
+
+</form>
