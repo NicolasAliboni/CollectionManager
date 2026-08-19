@@ -9,11 +9,11 @@ namespace CollectionManager.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 
-public class JogosControllers : ControllerBase
+public class JogosController : ControllerBase
 {
     private readonly AppDbContext _context;
 
-    public JogosControllers(AppDbContext context)
+    public JogosController(AppDbContext context)
     {
         _context = context;
     }
