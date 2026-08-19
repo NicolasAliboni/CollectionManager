@@ -1,0 +1,119 @@
+﻿@page
+@model CollectionManager.Web.Pages.Jogos.EditModel
+
+<h1>Editar Jogo</h1>
+
+<form method="post">
+
+    <input type="hidden" asp-for="ItemId" />
+
+    <div class="mb-3">
+        <label asp-for="Jogos.Nome" class="form-label"></label>
+        <input asp-for="Jogos.Nome" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.DataLancamento" class="form-label"></label>
+        <input asp-for="Jogos.DataLancamento"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.EstadoId" class="form-label">Estado</label>
+
+        <select asp-for="Jogos.EstadoId" class="form-select">
+            @foreach (var estado in Model.Estados)
+            {
+                <option value="@estado.Id">@estado.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.CodigoEAN" class="form-label">Código EAN</label>
+        <input asp-for="Jogos.CodigoEAN" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.DataAquisicao" class="form-label"></label>
+        <input asp-for="Jogos.DataAquisicao"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.ValorAquisicao" class="form-label"></label>
+        <input asp-for="Jogos.ValorAquisicao"
+               type="number"
+               step="0.01"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.FranquiaId" class="form-label">Franquia</label>
+
+        <select asp-for="Jogos.FranquiaId" class="form-select">
+            <option value="">Sem franquia</option>
+
+            @foreach (var franquia in Model.Franquias)
+            {
+                <option value="@franquia.Id">@franquia.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.MarcaId" class="form-label">Marca</label>
+
+        <select asp-for="Jogos.MarcaId" class="form-select">
+            @foreach (var marca in Model.Marcas)
+            {
+                <option value="@marca.Id">@marca.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.PlataformaId" class="form-label">Plataforma</label>
+
+        <select asp-for="Jogos.PlataformaId" class="form-select">
+            @foreach (var plataforma in Model.Plataformas)
+            {
+                <option value="@plataforma.Id">@plataforma.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.StatusId" class="form-label">Status</label>
+
+        <select asp-for="Jogos.StatusId" class="form-select">
+            @foreach (var status in Model.Status)
+            {
+                <option value="@status.Id">@status.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Jogos.Observacoes" class="form-label">Observações</label>
+        <textarea asp-for="Jogos.Observacoes"
+                  class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+
+    <a asp-page="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+    <button type="submit"
+            asp-page-handler="Delete"
+            class="btn btn-danger">
+        Excluir
+    </button>
+
+</form>

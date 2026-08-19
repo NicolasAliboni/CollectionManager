@@ -1,18 +1,18 @@
 ﻿namespace CollectionManager.Web.ViewModels;
 
-public class ControleViewModel
+public class JogoViewModel
 {
     public int ItemId { get; set; }
     public ItemViewModel Item { get; set; } = new();
-    public string Modelo { get; set; } = string.Empty;
     public int MarcaId { get; set; }
     public MarcaViewModel Marca { get; set; } = new();
     public int PlataformaId { get; set; }
     public PlataformaViewModel Plataforma { get; set; } = new();
-
+    public int StatusId { get; set; }
+    public StatusViewModel Status { get; set; } = new();
 }
 
-public class ControleFormViewModel
+public class JogoFormViewModel
 {
     public string Nome { get; set; } = string.Empty;
     public DateOnly DataLancamento { get; set; }
@@ -22,7 +22,7 @@ public class ControleFormViewModel
     public decimal? ValorAquisicao { get; set; }
     public int? FranquiaId { get; set; }
     public string? Observacoes { get; set; }
-    public string Modelo { get; set; } = string.Empty;
     public int MarcaId { get; set; }
     public int PlataformaId { get; set; }
+    public int StatusId { get; set; }
 }

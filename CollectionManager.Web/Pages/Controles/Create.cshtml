@@ -62,15 +62,6 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="Controle.Observacoes" class="form-label">Observações</label>
-        <textarea asp-for="Controle.Observacoes"
-                  class="form-control">
-        </textarea>
-    </div>
-
-    <hr />
-
-    <div class="mb-3">
         <label asp-for="Controle.Modelo" class="form-label"></label>
         <input asp-for="Controle.Modelo" class="form-control" />
     </div>
@@ -95,6 +86,13 @@
                 <option value="@plataforma.Id">@plataforma.Nome</option>
             }
         </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.Observacoes" class="form-label">Observações</label>
+        <textarea asp-for="Controle.Observacoes"
+                  class="form-control">
+        </textarea>
     </div>
 
     <button type="submit" class="btn btn-primary">
