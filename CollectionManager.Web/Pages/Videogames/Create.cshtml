@@ -1,0 +1,89 @@
+﻿@page
+@model CollectionManager.Web.Pages.Videogames.CreateModel
+
+<h1>Adicionar Console</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Videogame.Nome" class="form-label"></label>
+        <input asp-for="Videogame.Nome" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Videogame.DataLancamento" class="form-label"></label>
+        <input asp-for="Videogame.DataLancamento"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Videogame.EstadoId" class="form-label">Estado</label>
+
+        <select asp-for="Videogame.EstadoId" class="form-select">
+            <option value="">Selecione um Estado</option>
+            @foreach (var estado in Model.Estados)
+            {
+                <option value="@estado.Id">@estado.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Videogame.CodigoEAN" class="form-label">Código EAN</label>
+        <input asp-for="Videogame.CodigoEAN" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Videogame.DataAquisicao" class="form-label"></label>
+        <input asp-for="Videogame.DataAquisicao"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Videogame.ValorAquisicao" class="form-label"></label>
+        <input asp-for="Videogame.ValorAquisicao"
+               type="number"
+               step="0.01"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Videogame.FranquiaId" class="form-label">Franquia</label>
+
+        <select asp-for="Videogame.FranquiaId" class="form-select">
+            <option value="">Sem franquia</option>
+
+            @foreach (var franquia in Model.Franquias)
+            {
+                <option value="@franquia.Id">@franquia.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Videogame.MarcaId" class="form-label">Marca</label>
+
+        <select asp-for="Videogame.MarcaId" class="form-select">
+            @foreach (var marca in Model.Marcas)
+            {
+                <option value="@marca.Id">@marca.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Videogame.Observacoes" class="form-label">Observações</label>
+        <textarea asp-for="Videogame.Observacoes"
+                  class="form-control">
+            </textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+
+    <a asp-page="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>

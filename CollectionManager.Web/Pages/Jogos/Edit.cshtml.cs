@@ -66,9 +66,7 @@ public class EditModel : PageModel
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
         var response = await client.PutAsJsonAsync(
-            $"api/Jogos/{ItemId}",
-            Jogos
-        );
+            $"api/Jogos/{ItemId}",Jogos);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -116,8 +114,12 @@ public class EditModel : PageModel
             "api/Plataformas"
         ) ?? [];
 
-        Status = await client.GetFromJsonAsync<List<StatusViewModel>>(
+        var todosStatus = await client.GetFromJsonAsync<List<StatusViewModel>>(
             "api/Status"
         ) ?? [];
+
+        Status = todosStatus
+            .Where(s => s.Tipo == TipoItem.Jogo)
+            .ToList();
     }
 }

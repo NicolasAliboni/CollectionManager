@@ -1,0 +1,40 @@
+﻿@page
+@model CollectionManager.Web.Pages.Videogames.IndexModel
+
+<h1>Consoles</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">
+    Adicionar Console
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Data Lançmento</th>
+            <th>Marca</th>
+            <th>Estado</th>
+            <th>Valor</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var videogames in Model.Videogames)
+        {
+            <tr>
+                <td>@videogames.Item.Nome</td>
+                <td>@videogames.Item.DataLancamento</td>
+                <td>@videogames.Marca.Nome</td>
+                <td>@videogames.Item.Estado.Nome</td>
+                <td>@videogames.Item.ValorAquisicao</td>
+                <td>
+                    <a asp-page="Edit"
+                       asp-route-id="@videogames.ItemId"
+                       class="btn btn-sm btn-secondary">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
