@@ -17,6 +17,21 @@ public class ControlesController : ControllerBase
         _context = context;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var controles = await _context.Controles
+            .Include(c => c.Item)
+                .ThenInclude(i => i.Estado)
+            .Include(c => c.Item)
+                .ThenInclude(i => i.Franquia)
+            .Include(c => c.Marca)
+            .Include(c => c.Plataforma)
+            .ToListAsync();
+
+        return Ok(controles);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
