@@ -1,0 +1,51 @@
+﻿@page
+@model CollectionManager.Web.Pages.Controles.IndexModel
+
+<h1>Controles</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">
+    Adicionar Controle
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Modelo</th>
+            <th>Estado</th>
+            <th>Marca</th>
+            <th>Plataforma</th>
+            <th>Franquia</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var controle in Model.Controles)
+        {
+            <tr>
+                <td>@controle.Item.Nome</td>
+
+                <td>@controle.Modelo</td>
+
+                <td>@controle.Item.Estado.Nome</td>
+
+                <td>@controle.Marca.Nome</td>
+
+                <td>@controle.Plataforma.Nome</td>
+
+                <td>
+                    @(controle.Item.Franquia?.Nome ?? "-")
+                </td>
+
+                <td>
+                    <a asp-page="Edit"
+                       asp-route-id="@controle.ItemId"
+                       class="btn btn-sm btn-secondary">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,108 @@
+﻿@page
+@model CollectionManager.Web.Pages.Controles.CreateModel
+
+<h1>Adicionar Controle</h1>
+
+<form method="post">
+
+    <div class="mb-3">
+        <label asp-for="Controle.Nome" class="form-label"></label>
+        <input asp-for="Controle.Nome" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.DataLancamento" class="form-label"></label>
+        <input asp-for="Controle.DataLancamento"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.EstadoId" class="form-label">Estado</label>
+
+        <select asp-for="Controle.EstadoId" class="form-select">
+            @foreach (var estado in Model.Estados)
+            {
+                <option value="@estado.Id">@estado.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.CodigoEAN" class="form-label">Código EAN</label>
+        <input asp-for="Controle.CodigoEAN" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.DataAquisicao" class="form-label"></label>
+        <input asp-for="Controle.DataAquisicao"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.ValorAquisicao" class="form-label"></label>
+        <input asp-for="Controle.ValorAquisicao"
+               type="number"
+               step="0.01"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.FranquiaId" class="form-label">Franquia</label>
+
+        <select asp-for="Controle.FranquiaId" class="form-select">
+            <option value="">Sem franquia</option>
+
+            @foreach (var franquia in Model.Franquias)
+            {
+                <option value="@franquia.Id">@franquia.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.Observacoes" class="form-label">Observações</label>
+        <textarea asp-for="Controle.Observacoes"
+                  class="form-control">
+        </textarea>
+    </div>
+
+    <hr />
+
+    <div class="mb-3">
+        <label asp-for="Controle.Modelo" class="form-label"></label>
+        <input asp-for="Controle.Modelo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.MarcaId" class="form-label">Marca</label>
+
+        <select asp-for="Controle.MarcaId" class="form-select">
+            @foreach (var marca in Model.Marcas)
+            {
+                <option value="@marca.Id">@marca.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Controle.PlataformaId" class="form-label">Plataforma</label>
+
+        <select asp-for="Controle.PlataformaId" class="form-select">
+            @foreach (var plataforma in Model.Plataformas)
+            {
+                <option value="@plataforma.Id">@plataforma.Nome</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+
+    <a asp-page="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
