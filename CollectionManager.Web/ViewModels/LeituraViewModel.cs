@@ -12,12 +12,12 @@ public class LeituraViewModel
         public int ItemId { get; set; }
         public ItemViewModel Item { get; set; } = new();
         public TipoLeitura Tipo { get; set; }
-        public int EditoraExteriorId { get; set; }
+        public int? EditoraExteriorId { get; set; }
         public EditoraViewModel EditoraExterior { get; set; } = new();
-        public int EditoraBrasilId { get; set; }
+        public int? EditoraBrasilId { get; set; }
         public EditoraViewModel EditoraBrasil { get; set; } = new();
         public string Autor { get; set; } = string.Empty;
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
         public StatusViewModel Status { get; set; } = new();
         public string Lingua { get; set; } = string.Empty;
         public string? ISBN13 { get; set; }
@@ -36,10 +36,10 @@ public class LeituraFormViewModel
     public int? FranquiaId { get; set; }
     public string? Observacoes { get; set; }
     public TipoLeitura Tipo { get; set; }
-    public int EditoraExteriorId { get; set; }
-    public int EditoraBrasilId { get; set; }
+    public int? EditoraExteriorId { get; set; }
+    public int? EditoraBrasilId { get; set; }
     public string Autor { get; set; } = string.Empty;
-    public int StatusId { get; set; }
+    public int? StatusId { get; set; }
     public string Lingua { get; set; } = string.Empty;
     public string? ISBN13 { get; set; }
     public int Volume { get; set; }

@@ -1,0 +1,47 @@
+﻿@page
+@model CollectionManager.Web.Pages.Leituras.IndexModel
+
+<h1>Leituras</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">
+    Adicionar Leitura
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Franquia</th>
+            <th>Editora Brasil</th>
+            <th>Data Lançmento</th>
+            <th>Status</th>
+            <th>Estado</th>
+            <th>Volume</th>
+            <th>Volume Ate</th>
+            <th>Valor</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var leituras in Model.Leituras)
+        {
+            <tr>
+                <td>@leituras.Item.Nome</td>
+                <td>@(leituras.Item.Franquia?.Nome ?? "-")</td>
+                <td>@leituras.Item.DataLancamento</td>
+                <td>@leituras.Status.Nome</td>
+                <td>@leituras.Item.Estado.Nome</td>
+                <td>@leituras.Volume</td>
+                <td>@leituras.VolumeAte</td>
+                <td>@leituras.Item.ValorAquisicao</td>
+                <td>
+                    <a asp-page="Edit"
+                       asp-route-id="@leituras.ItemId"
+                       class="btn btn-sm btn-secondary">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
