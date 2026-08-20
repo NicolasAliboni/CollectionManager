@@ -1,51 +1,74 @@
 ﻿@page
 @model CollectionManager.Web.Pages.Controles.IndexModel
 
-<h1>Controles</h1>
+@{
+    ViewData["Title"] = "Controles";
+}
 
-<a asp-page="Create" class="btn btn-primary mb-3">
-    Adicionar Controle
-</a>
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>Controles</h1>
+        <p class="page-subtitle">
+            Visualize e gerencie os controles da sua coleção.
+        </p>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Modelo</th>
-            <th>Estado</th>
-            <th>Marca</th>
-            <th>Plataforma</th>
-            <th>Franquia</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
+    <a asp-page="Create" class="btn btn-primary">
+        + Adicionar Controle
+    </a>
+</div>
 
-    <tbody>
-        @foreach (var controle in Model.Controles)
-        {
-            <tr>
-                <td>@controle.Item.Nome</td>
+<div class="table-card">
 
-                <td>@controle.Modelo</td>
+    <div class="table-responsive">
+        <table class="table collection-table align-middle">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Modelo</th>
+                    <th>Estado</th>
+                    <th>Marca</th>
+                    <th>Plataforma</th>
+                    <th>Franquia</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
 
-                <td>@controle.Item.Estado.Nome</td>
+            <tbody>
+                @foreach (var controle in Model.Controles)
+                {
+                    <tr>
+                        <td>
+                            <strong>@controle.Item.Nome</strong>
+                        </td>
 
-                <td>@controle.Marca.Nome</td>
+                        <td>@controle.Modelo</td>
 
-                <td>@controle.Plataforma.Nome</td>
+                        <td>
+                            <span class="item-badge">
+                                @controle.Item.Estado.Nome
+                            </span>
+                        </td>
 
-                <td>
-                    @(controle.Item.Franquia?.Nome ?? "-")
-                </td>
+                        <td>@controle.Marca.Nome</td>
 
-                <td>
-                    <a asp-page="Edit"
-                       asp-route-id="@controle.ItemId"
-                       class="btn btn-sm btn-secondary">
-                        Editar
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        <td>@controle.Plataforma.Nome</td>
+
+                        <td>
+                            @(controle.Item.Franquia?.Nome ?? "-")
+                        </td>
+
+                        <td class="text-end">
+                            <a asp-page="Edit"
+                               asp-route-id="@controle.ItemId"
+                               class="btn btn-sm btn-outline-secondary">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

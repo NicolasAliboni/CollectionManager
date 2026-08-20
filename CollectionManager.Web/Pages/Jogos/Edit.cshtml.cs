@@ -18,7 +18,7 @@ public class EditModel : PageModel
     public int ItemId { get; set; }
 
     [BindProperty]
-    public JogoFormViewModel Jogos { get; set; } = new();
+    public JogoFormViewModel Jogo { get; set; } = new();
 
     public List<EstadoViewModel> Estados { get; set; } = [];
     public List<FranquiaViewModel> Franquias { get; set; } = [];
@@ -41,7 +41,7 @@ public class EditModel : PageModel
 
         ItemId = jogo.ItemId;
 
-        Jogos = new JogoFormViewModel
+        Jogo = new JogoFormViewModel
         {
             Nome = jogo.Item.Nome,
             DataLancamento = jogo.Item.DataLancamento,
@@ -66,7 +66,7 @@ public class EditModel : PageModel
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
         var response = await client.PutAsJsonAsync(
-            $"api/Jogos/{ItemId}",Jogos);
+            $"api/Jogos/{ItemId}",Jogo);
 
         if (!response.IsSuccessStatusCode)
         {

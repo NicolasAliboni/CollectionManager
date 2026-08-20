@@ -1,35 +1,58 @@
 @page
 @model CollectionManager.Web.Pages.Status.IndexModel
 
-<h1>Status</h1>
+@{
+    ViewData["Title"] = "Status";
+}
 
-<a asp-page="Create" class="btn btn-primary mb-3">
-    Adicionar Status
-</a>
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>Status</h1>
+        <p class="page-subtitle">
+            Gerencie os status disponíveis para cada tipo de coleção.
+        </p>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
+    <a asp-page="Create" class="btn btn-primary">
+        + Adicionar Status
+    </a>
+</div>
 
-    <tbody>
-        @foreach (var status in Model.Status)
-        {
-            <tr>
-                <td>@status.Nome</td>
-                <td>@status.Tipo</td>
-                <td>
-                    <a asp-page="Edit"
-                       asp-route-id="@status.Id"
-                       class="btn btn-sm btn-secondary">
-                        Editar
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="table-card">
+    <div class="table-responsive">
+        <table class="table collection-table align-middle">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var status in Model.Status)
+                {
+                    <tr>
+                        <td>
+                            <strong>@status.Nome</strong>
+                        </td>
+
+                        <td>
+                            <span class="item-badge">
+                                @status.Tipo
+                            </span>
+                        </td>
+
+                        <td class="text-end">
+                            <a asp-page="Edit"
+                               asp-route-id="@status.Id"
+                               class="btn btn-sm btn-outline-secondary">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

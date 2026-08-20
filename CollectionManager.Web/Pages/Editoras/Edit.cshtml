@@ -1,40 +1,78 @@
 @page
-@model CollectionManager.Web.Pages.Editoras.EditModel
 @using CollectionManager.Web.ViewModels
+@model CollectionManager.Web.Pages.Editoras.EditModel
 
-<h1>Editar Editora</h1>
+@{
+    ViewData["Title"] = "Editar Editora";
+}
 
-<form method="post">
+<div class="form-page-header">
+    <a asp-page="Index" class="form-back-link">
+        ← Voltar para Editoras
+    </a>
+
+    <h1>Editar Editora</h1>
+
+    <p class="form-page-subtitle">
+        Cadastre uma editora utilizada nas suas leituras.
+    </p>
+</div>
+
+<form method="post" class="form-card form-card-small">
 
     <input type="hidden" asp-for="Editora.Id" />
 
-    <div class="mb-3">
-        <label asp-for="Editora.Nome" class="form-label"></label>
+    <section class="form-section">
+        <div class="form-section-title">
+            Informações
+        </div>
 
-        <input asp-for="Editora.Nome" class="form-control" />
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label asp-for="Editora.Nome" class="form-label">
+                    Nome
+                </label>
+
+                <input asp-for="Editora.Nome"
+                       class="form-control"
+                       placeholder="Ex.: Panini" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Editora.Origem" class="form-label">
+                    Origem
+                </label>
+
+                <select asp-for="Editora.Origem"
+                        asp-items="Html.GetEnumSelectList<OrigemEditora>()"
+                        class="form-select">
+
+                    <option value="">
+                        Selecione uma Origem
+                    </option>
+
+                </select>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="form-actions">
+
+        <button type="submit"
+                asp-page-handler="Delete"
+                class="btn btn-danger">
+            Excluir
+        </button>
+
+        <a asp-page="Index" class="btn btn-outline-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit" class="btn btn-primary">
+            Salvar
+        </button>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Editora.Origem" class="form-label"></label>
-
-        <select asp-for="Editora.Origem"
-                asp-items="Html.GetEnumSelectList<OrigemEditora>()"
-                class="form-select">
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">
-        Salvar
-    </button>
-
-    <a asp-page="Index" class="btn btn-secondary">
-        Cancelar
-    </a>
-
-    <button type="submit"
-            asp-page-handler="Delete"
-            class="btn btn-danger">
-        Excluir
-    </button>
 
 </form>

@@ -20,9 +20,9 @@ public class EditModel : PageModel
     [BindProperty]
     public VideogameFormViewModel Videogame { get; set; } = new();
 
-    public List<EstadoViewModel> Estado { get; set; } = [];
-    public List<FranquiaViewModel> Franquia { get; set; } = [];
-    public List<MarcaViewModel> Marca { get; set; } = [];
+    public List<EstadoViewModel> Estados { get; set; } = [];
+    public List<FranquiaViewModel> Franquias { get; set; } = [];
+    public List<MarcaViewModel> Marcas { get; set; } = [];
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
@@ -91,13 +91,13 @@ public class EditModel : PageModel
     {
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
-        Estado = await client.GetFromJsonAsync<List<EstadoViewModel>>(
+        Estados = await client.GetFromJsonAsync<List<EstadoViewModel>>(
             "api/Estados") ?? [];
 
-        Franquia = await client.GetFromJsonAsync<List<FranquiaViewModel>>(
+        Franquias = await client.GetFromJsonAsync<List<FranquiaViewModel>>(
             "api/Franquias") ?? [];
 
-        Marca = await client.GetFromJsonAsync<List<MarcaViewModel>>(
+        Marcas = await client.GetFromJsonAsync<List<MarcaViewModel>>(
             "api/Marcas") ?? [];
     }
 }

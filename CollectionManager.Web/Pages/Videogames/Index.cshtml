@@ -1,40 +1,71 @@
 ﻿@page
 @model CollectionManager.Web.Pages.Videogames.IndexModel
 
-<h1>Consoles</h1>
+@{
+    ViewData["Title"] = "Consoles";
+}
 
-<a asp-page="Create" class="btn btn-primary mb-3">
-    Adicionar Console
-</a>
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>Consoles</h1>
+        <p class="page-subtitle">
+            Visualize e gerencie os consoles da sua coleção.
+        </p>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Data Lançmento</th>
-            <th>Marca</th>
-            <th>Estado</th>
-            <th>Valor</th>
-        </tr>
-    </thead>
+    <a asp-page="Create" class="btn btn-primary">
+        + Adicionar Console
+    </a>
+</div>
 
-    <tbody>
-        @foreach (var videogames in Model.Videogames)
-        {
-            <tr>
-                <td>@videogames.Item.Nome</td>
-                <td>@videogames.Item.DataLancamento</td>
-                <td>@videogames.Marca.Nome</td>
-                <td>@videogames.Item.Estado.Nome</td>
-                <td>@videogames.Item.ValorAquisicao</td>
-                <td>
-                    <a asp-page="Edit"
-                       asp-route-id="@videogames.ItemId"
-                       class="btn btn-sm btn-secondary">
-                        Editar
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="table-card">
+    <div class="table-responsive">
+        <table class="table collection-table align-middle">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data Lançamento</th>
+                    <th>Marca</th>
+                    <th>Estado</th>
+                    <th>Valor</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var videogame in Model.Videogames)
+                {
+                    <tr>
+                        <td>
+                            <strong>@videogame.Item.Nome</strong>
+                        </td>
+
+                        <td>@videogame.Item.DataLancamento.ToString("dd/MM/yyyy")</td>
+
+                        <td>@videogame.Marca.Nome</td>
+
+                        <td>
+                            <span class="item-badge">
+                                @videogame.Item.Estado.Nome
+                            </span>
+                        </td>
+
+                        <td>
+                            @(videogame.Item.ValorAquisicao.HasValue
+                                ? videogame.Item.ValorAquisicao.Value.ToString("C")
+                                : "-")
+                        </td>
+
+                        <td class="text-end">
+                            <a asp-page="Edit"
+                               asp-route-id="@videogame.ItemId"
+                               class="btn btn-sm btn-outline-secondary">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

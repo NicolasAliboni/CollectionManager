@@ -1,89 +1,191 @@
 ﻿@page
 @model CollectionManager.Web.Pages.Videogames.CreateModel
 
-<h1>Adicionar Console</h1>
+@{
+    ViewData["Title"] = "Adicionar Console";
+}
 
-<form method="post">
-    <div class="mb-3">
-        <label asp-for="Videogame.Nome" class="form-label"></label>
-        <input asp-for="Videogame.Nome" class="form-control" />
-    </div>
+<div class="form-page-header">
 
-    <div class="mb-3">
-        <label asp-for="Videogame.DataLancamento" class="form-label"></label>
-        <input asp-for="Videogame.DataLancamento"
-               type="date"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Videogame.EstadoId" class="form-label">Estado</label>
-
-        <select asp-for="Videogame.EstadoId" class="form-select">
-            <option value="">Selecione um Estado</option>
-            @foreach (var estado in Model.Estados)
-            {
-                <option value="@estado.Id">@estado.Nome</option>
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Videogame.CodigoEAN" class="form-label">Código EAN</label>
-        <input asp-for="Videogame.CodigoEAN" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Videogame.DataAquisicao" class="form-label"></label>
-        <input asp-for="Videogame.DataAquisicao"
-               type="date"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Videogame.ValorAquisicao" class="form-label"></label>
-        <input asp-for="Videogame.ValorAquisicao"
-               type="number"
-               step="0.01"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Videogame.FranquiaId" class="form-label">Franquia</label>
-
-        <select asp-for="Videogame.FranquiaId" class="form-select">
-            <option value="">Sem franquia</option>
-
-            @foreach (var franquia in Model.Franquias)
-            {
-                <option value="@franquia.Id">@franquia.Nome</option>
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Videogame.MarcaId" class="form-label">Marca</label>
-
-        <select asp-for="Videogame.MarcaId" class="form-select">
-            @foreach (var marca in Model.Marcas)
-            {
-                <option value="@marca.Id">@marca.Nome</option>
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Videogame.Observacoes" class="form-label">Observações</label>
-        <textarea asp-for="Videogame.Observacoes"
-                  class="form-control">
-            </textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary">
-        Salvar
-    </button>
-
-    <a asp-page="Index" class="btn btn-secondary">
-        Cancelar
+    <a asp-page="Index" class="form-back-link">
+        ← Voltar para Consoles
     </a>
+
+    <h1>Adicionar Console</h1>
+
+    <p class="form-page-subtitle">
+        Preencha as informações do console para adicioná-lo à sua coleção.
+    </p>
+
+</div>
+
+<form method="post" class="form-card">
+
+    <section class="form-section">
+
+        <div class="form-section-title">
+            Informações principais
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label asp-for="Videogame.Nome" class="form-label">
+                    Nome
+                </label>
+
+                <input asp-for="Videogame.Nome"
+                       class="form-control"
+                       placeholder="Ex.: PlayStation 5" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Videogame.MarcaId" class="form-label">
+                    Marca
+                </label>
+
+                <select asp-for="Videogame.MarcaId"
+                        class="form-select">
+
+                    <option value="">Selecione uma Marca</option>
+
+                    @foreach (var marca in Model.Marcas)
+                    {
+                        <option value="@marca.Id">
+                            @marca.Nome
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Videogame.DataLancamento"
+                       class="form-label">
+                    Data de Lançamento
+                </label>
+
+                <input asp-for="Videogame.DataLancamento"
+                       type="date"
+                       class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Videogame.EstadoId"
+                       class="form-label">
+                    Estado
+                </label>
+
+                <select asp-for="Videogame.EstadoId"
+                        class="form-select">
+
+                    <option value="">Selecione um Estado</option>
+
+                    @foreach (var estado in Model.Estados)
+                    {
+                        <option value="@estado.Id">
+                            @estado.Nome
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Videogame.FranquiaId"
+                       class="form-label">
+                    Franquia
+                </label>
+
+                <select asp-for="Videogame.FranquiaId"
+                        class="form-select">
+
+                    <option value="">Sem franquia</option>
+
+                    @foreach (var franquia in Model.Franquias)
+                    {
+                        <option value="@franquia.Id">
+                            @franquia.Nome
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Videogame.CodigoEAN"
+                       class="form-label">
+                    Código EAN
+                </label>
+
+                <input asp-for="Videogame.CodigoEAN"
+                       class="form-control"
+                       placeholder="Código de barras" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Videogame.DataAquisicao"
+                       class="form-label">
+                    Data de Aquisição
+                </label>
+
+                <input asp-for="Videogame.DataAquisicao"
+                       type="date"
+                       class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Videogame.ValorAquisicao"
+                       class="form-label">
+                    Valor de Aquisição
+                </label>
+
+                <input asp-for="Videogame.ValorAquisicao"
+                       type="number"
+                       step="0.01"
+                       class="form-control"
+                       placeholder="0,00" />
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="form-section">
+
+        <div class="form-section-title">
+            Informações complementares
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group form-group-full">
+                <label asp-for="Videogame.Observacoes"
+                       class="form-label">
+                    Observações
+                </label>
+
+                <textarea asp-for="Videogame.Observacoes"
+                          class="form-control"
+                          placeholder="Informações adicionais sobre o console..."></textarea>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="form-actions">
+
+        <a asp-page="Index"
+           class="btn btn-outline-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Salvar
+        </button>
+
+    </div>
+
 </form>

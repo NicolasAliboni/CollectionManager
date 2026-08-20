@@ -1,46 +1,80 @@
 ﻿@page
 @model CollectionManager.Web.Pages.Jogos.IndexModel
 
-<h1>Jogos</h1>
+@{
+    ViewData["Title"] = "Jogos";
+}
 
-<a asp-page="Create" class="btn btn-primary mb-3">
-    Adicionar Jogo
-</a>
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>Jogos</h1>
+        <p class="page-subtitle">
+            Visualize e gerencie os jogos da sua coleção.
+        </p>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Franquia</th>
-            <th>Data Lançmento</th>
-            <th>Plataforma</th>
-            <th>Status</th>
-            <th>Desenvolvedora</th>
-            <th>Estado</th>
-            <th>Valor</th>
-        </tr>
-    </thead>
+    <a asp-page="Create" class="btn btn-primary">
+        + Adicionar Jogo
+    </a>
+</div>
 
-    <tbody>
-        @foreach (var jogo in Model.Jogos)
-        {
-            <tr>
-                <td>@jogo.Item.Nome</td>
-                <td>@(jogo.Item.Franquia?.Nome ?? "-")</td>
-                <td>@jogo.Item.DataLancamento</td>
-                <td>@jogo.Plataforma.Nome</td>
-                <td>@jogo.Status.Nome</td>
-                <td>@jogo.Marca.Nome</td>
-                <td>@jogo.Item.Estado.Nome</td>
-                <td>@jogo.Item.ValorAquisicao</td>
-                <td>
-                    <a asp-page="Edit"
-                       asp-route-id="@jogo.ItemId"
-                       class="btn btn-sm btn-secondary">
-                        Editar
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="table-card">
+    <div class="table-responsive">
+        <table class="table collection-table align-middle">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Franquia</th>
+                    <th>Data Lançamento</th>
+                    <th>Plataforma</th>
+                    <th>Status</th>
+                    <th>Desenvolvedora</th>
+                    <th>Estado</th>
+                    <th>Valor</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var jogo in Model.Jogos)
+                {
+                    <tr>
+                        <td>
+                            <strong>@jogo.Item.Nome</strong>
+                        </td>
+
+                        <td>@(jogo.Item.Franquia?.Nome ?? "-")</td>
+
+                        <td>@jogo.Item.DataLancamento.ToString("dd/MM/yyyy")</td>
+
+                        <td>@jogo.Plataforma.Nome</td>
+
+                        <td>
+                            <span class="item-badge">
+                                @jogo.Status.Nome
+                            </span>
+                        </td>
+
+                        <td>@jogo.Marca.Nome</td>
+
+                        <td>@jogo.Item.Estado.Nome</td>
+
+                        <td>
+                            @(jogo.Item.ValorAquisicao.HasValue
+                                ? jogo.Item.ValorAquisicao.Value.ToString("C")
+                                : "-")
+                        </td>
+
+                        <td class="text-end">
+                            <a asp-page="Edit"
+                               asp-route-id="@jogo.ItemId"
+                               class="btn btn-sm btn-outline-secondary">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

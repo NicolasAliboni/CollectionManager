@@ -1,20 +1,50 @@
 ﻿@page
 @model CollectionManager.Web.Pages.Plataformas.CreateModel
 
-<h1>Adicionar Plataforma</h1>
+@{
+    ViewData["Title"] = "Adicionar Plataforma";
+}
 
-<form method="post">
-    <div class="mb-3">
-        <label asp-for="Plataforma.Nome" class="form-label"></label>
+<div class="form-page-header">
+    <a asp-page="Index" class="form-back-link">
+        ← Voltar para Plataformas
+    </a>
 
-        <input asp-for="Plataforma.Nome" class="form-control" />
+    <h1>Adicionar Plataforma</h1>
+
+    <p class="form-page-subtitle">
+        Cadastre uma plataforma para relacionar aos jogos e controles.
+    </p>
+</div>
+
+<form method="post" class="form-card form-card-small">
+
+    <section class="form-section">
+        <div class="form-section-title">
+            Informações
+        </div>
+
+        <div class="form-grid form-grid-single">
+            <div class="form-group">
+                <label asp-for="Plataforma.Nome" class="form-label">
+                    Nome
+                </label>
+
+                <input asp-for="Plataforma.Nome"
+                       class="form-control"
+                       placeholder="Ex.: PlayStation 5" />
+            </div>
+        </div>
+    </section>
+
+    <div class="form-actions">
+        <a asp-page="Index" class="btn btn-outline-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit" class="btn btn-primary">
+            Salvar
+        </button>
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Salvar
-    </button>
-
-    <a asp-page="Index" class="btn btn-secondary">
-        Cancelar
-    </a>
 </form>

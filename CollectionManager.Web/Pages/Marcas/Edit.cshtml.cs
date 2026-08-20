@@ -21,9 +21,7 @@ public class EditModel : PageModel
     {
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
-        var marca = await client.GetFromJsonAsync<MarcaViewModel>(
-            $"api/Marcas/{id}"
-        );
+        var marca = await client.GetFromJsonAsync<MarcaViewModel>($"api/Marcas/{id}");
 
         if (marca == null)
         {
@@ -39,10 +37,7 @@ public class EditModel : PageModel
     {
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
-        var response = await client.PutAsJsonAsync(
-            $"api/Marcas/{Marca.Id}",
-            Marca
-        );
+        var response = await client.PutAsJsonAsync($"api/Marcas/{Marca.Id}",Marca);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -56,9 +51,7 @@ public class EditModel : PageModel
     {
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
-        var response = await client.DeleteAsync(
-            $"api/Marcas/{Marca.Id}"
-        );
+        var response = await client.DeleteAsync($"api/Marcas/{Marca.Id}");
 
         if (!response.IsSuccessStatusCode)
         {

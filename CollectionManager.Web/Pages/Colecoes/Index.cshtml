@@ -1,34 +1,106 @@
 ﻿@page
 @model CollectionManager.Web.Pages.Colecoes.IndexModel
 
-<h1>Minhas Coleções</h1>
+@{
+    ViewData["Title"] = "Coleções";
+}
 
-<div class="row g-3 mt-2">
-    <div class="col-md-6">
-        <a asp-page="/Jogos/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Jogos
-        </a>
+<div class="page-header">
+    <div>
+        <h1>Minhas Coleções</h1>
+        <p class="page-subtitle">
+            Escolha uma coleção para visualizar e gerenciar seus itens.
+        </p>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <a asp-page="/Controles/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Controles
-        </a>
-    </div>
+<div class="collections-grid">
 
-    <div class="col-md-6">
-        <a asp-page="/Videogames/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Consoles
-        </a>
-    </div>
+    <a asp-page="/Controles/Index"
+       class="collection-card collection-card-link">
 
-    <div class="col-md-6">
-        <a asp-page="/Leituras/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Leituras
-        </a>
-    </div>
+        <div class="collection-card-icon">
+            🎮
+        </div>
+
+        <div class="collection-card-content">
+            <h2>Controles</h2>
+
+            <p>
+                Gerencie seus controles e edições especiais.
+            </p>
+
+            <span class="collection-card-action">
+                Ver coleção →
+            </span>
+        </div>
+
+    </a>
+
+
+    <a asp-page="/Jogos/Index"
+       class="collection-card collection-card-link">
+
+        <div class="collection-card-icon">
+            💿
+        </div>
+
+        <div class="collection-card-content">
+            <h2>Jogos</h2>
+
+            <p>
+                Organize sua coleção de jogos por plataforma e franquia.
+            </p>
+
+            <span class="collection-card-action">
+                Ver coleção →
+            </span>
+        </div>
+
+    </a>
+
+
+    <a asp-page="/Videogames/Index"
+       class="collection-card collection-card-link">
+
+        <div class="collection-card-icon">
+            🕹️
+        </div>
+
+        <div class="collection-card-content">
+            <h2>Consoles</h2>
+
+            <p>
+                Visualize e gerencie seus consoles e videogames.
+            </p>
+
+            <span class="collection-card-action">
+                Ver coleção →
+            </span>
+        </div>
+
+    </a>
+
+
+    <a asp-page="/Leituras/Index"
+       class="collection-card collection-card-link">
+
+        <div class="collection-card-icon">
+            📚
+        </div>
+
+        <div class="collection-card-content">
+            <h2>Leituras</h2>
+
+            <p>
+                Organize seus mangás, quadrinhos e livros.
+            </p>
+
+            <span class="collection-card-action">
+                Ver coleção →
+            </span>
+        </div>
+
+    </a>
+
 </div>

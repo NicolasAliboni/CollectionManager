@@ -1,69 +1,191 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CollectionManager.Web</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CollectionManager.Web.styles.css" asp-append-version="true" />
+
+    <title>@ViewData["Title"] - Collection Manager</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">CollectionManager.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-area=""
-                               asp-page="/Cadastros/Index">
-                                Cadastros
-                            </a>
-                        </li>
+    @{
+        var paginaAtual = ViewContext.RouteData.Values["page"]?.ToString() ?? "";
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-area=""
-                               asp-page="/Colecoes/Index">
-                                Coleções
-                            </a>
-                        </li>
+        var paginasCadastro = new[]
+        {
+            "/Cadastros",
+            "/Estados",
+            "/Franquias",
+            "/Marcas",
+            "/Plataformas",
+            "/Editoras",
+            "/Status"
+        };
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        var emCadastros = paginasCadastro.Any(p =>
+            paginaAtual.StartsWith(
+                p,
+                StringComparison.OrdinalIgnoreCase
+            )
+        );
+
+        var emColecoes = !emCadastros;
+
+        string SidebarClass(string pagina)
+        {
+            return paginaAtual.StartsWith(
+                pagina,
+                StringComparison.OrdinalIgnoreCase
+            )
+                ? "sidebar-link active"
+                : "sidebar-link";
+        }
+    }
+
+    <div class="app-layout">
+
+        <aside class="sidebar">
+
+            <a asp-page="/Colecoes/Index"
+               class="sidebar-logo">
+
+                <div class="logo-icon">
+                    ◇
                 </div>
+
+                <div>
+                    <strong>Collection</strong>
+                    <strong>Manager</strong>
+                </div>
+
+            </a>
+
+            <div class="sidebar-content">
+
+                @if (emCadastros)
+                {
+                    <div class="sidebar-title">
+                        CADASTROS
+                    </div>
+
+                    <a asp-page="/Estados/Index"
+                       class="@SidebarClass("/Estados")">
+                        Estados
+                    </a>
+
+                    <a asp-page="/Franquias/Index"
+                       class="@SidebarClass("/Franquias")">
+                        Franquias
+                    </a>
+
+                    <a asp-page="/Marcas/Index"
+                       class="@SidebarClass("/Marcas")">
+                        Marcas
+                    </a>
+
+                    <a asp-page="/Plataformas/Index"
+                       class="@SidebarClass("/Plataformas")">
+                        Plataformas
+                    </a>
+
+                    <a asp-page="/Editoras/Index"
+                       class="@SidebarClass("/Editoras")">
+                        Editoras
+                    </a>
+
+                    <a asp-page="/Status/Index"
+                       class="@SidebarClass("/Status")">
+                        Status
+                    </a>
+                }
+                else
+                {
+                    <div class="sidebar-title">
+                        COLEÇÕES
+                    </div>
+
+                    <a asp-page="/Controles/Index"
+                       class="@SidebarClass("/Controles")">
+                        Controles
+                    </a>
+
+                    <a asp-page="/Jogos/Index"
+                       class="@SidebarClass("/Jogos")">
+                        Jogos
+                    </a>
+
+                    <a asp-page="/Videogames/Index"
+                       class="@SidebarClass("/Videogames")">
+                        Consoles
+                    </a>
+
+                    <a asp-page="/Leituras/Index"
+                       class="@SidebarClass("/Leituras")">
+                        Leituras
+                    </a>
+                }
+
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+        </aside>
+
+
+        <div class="app-main">
+
+            <header class="topbar">
+
+                <nav class="topbar-menu">
+
+                    <a asp-page="/Colecoes/Index"
+                       class="topbar-link @(emColecoes ? "active" : "")">
+                        Coleções
+                    </a>
+
+                    <a asp-page="/Cadastros/Index"
+                       class="topbar-link @(emCadastros ? "active" : "")">
+                        Cadastros
+                    </a>
+
+                </nav>
+
+                <div class="topbar-search">
+
+                    <input type="text"
+                           placeholder="Buscar itens..."
+                           class="form-control" />
+
+                </div>
+
+            </header>
+
+
+            <main class="page-content">
+                @RenderBody()
+            </main>
+
+        </div>
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CollectionManager.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
+
 </html>

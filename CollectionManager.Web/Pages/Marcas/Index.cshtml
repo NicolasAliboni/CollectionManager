@@ -1,33 +1,51 @@
 ﻿@page
 @model CollectionManager.Web.Pages.Marcas.IndexModel
 
-<h1>Marcas</h1>
+@{
+    ViewData["Title"] = "Marcas";
+}
 
-<a asp-page="Create" class="btn btn-primary mb-3">
-    Adicionar Marca
-</a>
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>Marcas</h1>
+        <p class="page-subtitle">
+            Gerencie as marcas e desenvolvedoras utilizadas nas coleções.
+        </p>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
+    <a asp-page="Create" class="btn btn-primary">
+        + Adicionar Marca
+    </a>
+</div>
 
-    <tbody>
-        @foreach (var marca in Model.Marcas)
-        {
-            <tr>
-                <td>@marca.Nome</td>
-                <td>
-                    <a asp-page="Edit"
-                       asp-route-id="@marca.Id"
-                       class="btn btn-sm btn-secondary">
-                        Editar
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="table-card">
+    <div class="table-responsive">
+        <table class="table collection-table align-middle">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var marca in Model.Marcas)
+                {
+                    <tr>
+                        <td>
+                            <strong>@marca.Nome</strong>
+                        </td>
+
+                        <td class="text-end">
+                            <a asp-page="Edit"
+                               asp-route-id="@marca.Id"
+                               class="btn btn-sm btn-outline-secondary">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

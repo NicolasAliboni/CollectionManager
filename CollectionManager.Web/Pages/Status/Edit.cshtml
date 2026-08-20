@@ -1,40 +1,78 @@
 @page
-@model CollectionManager.Web.Pages.Status.EditModel
 @using CollectionManager.Web.ViewModels
+@model CollectionManager.Web.Pages.Status.EditModel
 
-<h1>Editar Status</h1>
+@{
+    ViewData["Title"] = "Editar Status";
+}
 
-<form method="post">
+<div class="form-page-header">
+    <a asp-page="Index" class="form-back-link">
+        ← Voltar para Status
+    </a>
+
+    <h1>Editar Status</h1>
+
+    <p class="form-page-subtitle">
+        Cadastre um status para utilizar nas coleções.
+    </p>
+</div>
+
+<form method="post" class="form-card form-card-small">
 
     <input type="hidden" asp-for="Status.Id" />
 
-    <div class="mb-3">
-        <label asp-for="Status.Nome" class="form-label"></label>
+    <section class="form-section">
+        <div class="form-section-title">
+            Informações
+        </div>
 
-        <input asp-for="Status.Nome" class="form-control" />
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label asp-for="Status.Nome" class="form-label">
+                    Nome
+                </label>
+
+                <input asp-for="Status.Nome"
+                       class="form-control"
+                       placeholder="Ex.: Jogando" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status.Tipo" class="form-label">
+                    Tipo
+                </label>
+
+                <select asp-for="Status.Tipo"
+                        asp-items="Html.GetEnumSelectList<TipoItem>()"
+                        class="form-select">
+
+                    <option value="">
+                        Selecione um Tipo
+                    </option>
+
+                </select>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="form-actions">
+
+        <button type="submit"
+                asp-page-handler="Delete"
+                class="btn btn-danger">
+            Excluir
+        </button>
+
+        <a asp-page="Index" class="btn btn-outline-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit" class="btn btn-primary">
+            Salvar
+        </button>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Status.Tipo" class="form-label"></label>
-
-        <select asp-for="Status.Tipo"
-                asp-items="Html.GetEnumSelectList<TipoItem>()"
-                class="form-select">
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">
-        Salvar
-    </button>
-
-    <a asp-page="Index" class="btn btn-secondary">
-        Cancelar
-    </a>
-
-    <button type="submit"
-            asp-page-handler="Delete"
-            class="btn btn-danger">
-        Excluir
-    </button>
 
 </form>

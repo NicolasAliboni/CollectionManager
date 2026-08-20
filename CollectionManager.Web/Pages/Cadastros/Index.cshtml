@@ -1,50 +1,145 @@
 ﻿@page
 @model CollectionManager.Web.Pages.Cadastros.IndexModel
 
-<h1>Cadastros</h1>
+@{
+    ViewData["Title"] = "Cadastros";
+}
 
-<div class="row g-3 mt-2">
-
-    <div class="col-md-4">
-        <a asp-page="/Estados/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Estados
-        </a>
+<div class="page-header">
+    <div>
+        <h1>Cadastros</h1>
+        <p class="page-subtitle">
+            Gerencie os dados auxiliares utilizados nas coleções.
+        </p>
     </div>
+</div>
 
-    <div class="col-md-4">
-        <a asp-page="/Franquias/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Franquias
-        </a>
-    </div>
+<div class="collections-grid">
 
-    <div class="col-md-4">
-        <a asp-page="/Marcas/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Marcas
-        </a>
-    </div>
+    <a asp-page="/Estados/Index"
+       class="collection-card collection-card-link">
 
-    <div class="col-md-4">
-        <a asp-page="/Plataformas/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Plataformas
-        </a>
-    </div>
+        <div class="collection-card-icon">
+            📦
+        </div>
 
-    <div class="col-md-4">
-        <a asp-page="/Editoras/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Editoras
-        </a>
-    </div>
+        <div class="collection-card-content">
+            <h2>Estados</h2>
 
-    <div class="col-md-4">
-        <a asp-page="/Status/Index"
-           class="btn btn-outline-primary w-100 p-4">
-            Status
-        </a>
-    </div>
+            <p>
+                Cadastre os estados de conservação dos itens.
+            </p>
+
+            <span class="collection-card-action">
+                Gerenciar →
+            </span>
+        </div>
+
+    </a>
+
+    <a asp-page="/Franquias/Index"
+       class="collection-card collection-card-link">
+
+        <div class="collection-card-icon">
+            🧩
+        </div>
+
+        <div class="collection-card-content">
+            <h2>Franquias</h2>
+
+            <p>
+                Organize as franquias relacionadas aos itens da coleção.
+            </p>
+
+            <span class="collection-card-action">
+                Gerenciar →
+            </span>
+        </div>
+
+    </a>
+
+    <a asp-page="/Marcas/Index"
+       class="collection-card collection-card-link">
+
+        <div class="collection-card-icon">
+            🏷️
+        </div>
+
+        <div class="collection-card-content">
+            <h2>Marcas</h2>
+
+            <p>
+                Cadastre fabricantes, editoras e marcas utilizadas nos itens.
+            </p>
+
+            <span class="collection-card-action">
+                Gerenciar →
+            </span>
+        </div>
+
+    </a>
+
+    <a asp-page="/Plataformas/Index"
+       class="collection-card collection-card-link">
+
+        <div class="collection-card-icon">
+            🎮
+        </div>
+
+        <div class="collection-card-content">
+            <h2>Plataformas</h2>
+
+            <p>
+                Gerencie as plataformas relacionadas a jogos e controles.
+            </p>
+
+            <span class="collection-card-action">
+                Gerenciar →
+            </span>
+        </div>
+
+    </a>
+
+    <a asp-page="/Editoras/Index"
+       class="collection-card collection-card-link">
+
+        <div class="collection-card-icon">
+            🏢
+        </div>
+
+        <div class="collection-card-content">
+            <h2>Editoras</h2>
+
+            <p>
+                Cadastre editoras brasileiras e estrangeiras.
+            </p>
+
+            <span class="collection-card-action">
+                Gerenciar →
+            </span>
+        </div>
+
+    </a>
+
+    <a asp-page="/Status/Index"
+       class="collection-card collection-card-link">
+
+        <div class="collection-card-icon">
+            ✅
+        </div>
+
+        <div class="collection-card-content">
+            <h2>Status</h2>
+
+            <p>
+                Gerencie os status disponíveis para jogos e leituras.
+            </p>
+
+            <span class="collection-card-action">
+                Gerenciar →
+            </span>
+        </div>
+
+    </a>
 
 </div>

@@ -2,170 +2,329 @@
 @using CollectionManager.Web.ViewModels
 @model CollectionManager.Web.Pages.Leituras.EditModel
 
-<h1>Adicionar Leitura</h1>
+@{
+    ViewData["Title"] = "Editar Leitura";
+}
 
-<form method="post">
+<div class="form-page-header">
+
+    <a asp-page="Index" class="form-back-link">
+        ← Voltar para Leituras
+    </a>
+
+    <h1>Editar Leitura</h1>
+
+    <p class="form-page-subtitle">
+        Preencha as informações da leitura para adicioná-la à sua coleção.
+    </p>
+
+</div>
+
+<form method="post" class="form-card">
 
     <input type="hidden" asp-for="ItemId" />
 
+    <section class="form-section">
 
-    <div class="mb-3">
-        <label asp-for="Leitura.Nome" class="form-label"></label>
-        <input asp-for="Leitura.Nome" class="form-control" />
+        <div class="form-section-title">
+            Informações principais
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label asp-for="Leitura.Nome" class="form-label">
+                    Nome
+                </label>
+
+                <input asp-for="Leitura.Nome"
+                       class="form-control"
+                       placeholder="Ex.: Berserk" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.Tipo" class="form-label">
+                    Tipo
+                </label>
+
+                <select asp-for="Leitura.Tipo"
+                        asp-items="Html.GetEnumSelectList<TipoLeitura>()"
+                        class="form-select">
+
+                    <option value="">
+                        Selecione um Tipo
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.DataLancamento"
+                       class="form-label">
+                    Data de Lançamento
+                </label>
+
+                <input asp-for="Leitura.DataLancamento"
+                       type="date"
+                       class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.EstadoId"
+                       class="form-label">
+                    Estado
+                </label>
+
+                <select asp-for="Leitura.EstadoId"
+                        class="form-select">
+
+                    <option value="">
+                        Selecione um Estado
+                    </option>
+
+                    @foreach (var estado in Model.Estados)
+                    {
+                        <option value="@estado.Id">
+                            @estado.Nome
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.FranquiaId"
+                       class="form-label">
+                    Franquia
+                </label>
+
+                <select asp-for="Leitura.FranquiaId"
+                        class="form-select">
+
+                    <option value="">
+                        Sem franquia
+                    </option>
+
+                    @foreach (var franquia in Model.Franquias)
+                    {
+                        <option value="@franquia.Id">
+                            @franquia.Nome
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.StatusId"
+                       class="form-label">
+                    Status
+                </label>
+
+                <select asp-for="Leitura.StatusId"
+                        class="form-select">
+
+                    <option value="">
+                        Selecione um Status
+                    </option>
+
+                    @foreach (var status in Model.Status)
+                    {
+                        <option value="@status.Id">
+                            @status.Nome
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.EditoraExteriorId"
+                       class="form-label">
+                    Editora Exterior
+                </label>
+
+                <select asp-for="Leitura.EditoraExteriorId"
+                        class="form-select">
+
+                    <option value="">
+                        Selecione uma Editora Exterior
+                    </option>
+
+                    @foreach (var editora in Model.EditoraExterior)
+                    {
+                        <option value="@editora.Id">
+                            @editora.Nome
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.EditoraBrasilId"
+                       class="form-label">
+                    Editora Brasil
+                </label>
+
+                <select asp-for="Leitura.EditoraBrasilId"
+                        class="form-select">
+
+                    <option value="">
+                        Selecione uma Editora Brasil
+                    </option>
+
+                    @foreach (var editora in Model.EditoraBrasil)
+                    {
+                        <option value="@editora.Id">
+                            @editora.Nome
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.Autor" class="form-label">
+                    Autor
+                </label>
+
+                <input asp-for="Leitura.Autor"
+                       class="form-control"
+                       placeholder="Nome do autor" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.Lingua" class="form-label">
+                    Língua
+                </label>
+
+                <input asp-for="Leitura.Lingua"
+                       class="form-control"
+                       placeholder="Ex.: Português" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.ISBN13"
+                       class="form-label">
+                    ISBN-13
+                </label>
+
+                <input asp-for="Leitura.ISBN13"
+                       class="form-control"
+                       placeholder="ISBN-13" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.CodigoEAN"
+                       class="form-label">
+                    Código EAN
+                </label>
+
+                <input asp-for="Leitura.CodigoEAN"
+                       class="form-control"
+                       placeholder="Código de barras" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.Volume"
+                       class="form-label">
+                    Volume
+                </label>
+
+                <input asp-for="Leitura.Volume"
+                       type="number"
+                       min="1"
+                       step="1"
+                       class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.VolumeAte"
+                       class="form-label">
+                    Volume Até
+                </label>
+
+                <input asp-for="Leitura.VolumeAte"
+                       type="number"
+                       min="1"
+                       step="1"
+                       class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.DataAquisicao"
+                       class="form-label">
+                    Data de Aquisição
+                </label>
+
+                <input asp-for="Leitura.DataAquisicao"
+                       type="date"
+                       class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Leitura.ValorAquisicao"
+                       class="form-label">
+                    Valor de Aquisição
+                </label>
+
+                <input asp-for="Leitura.ValorAquisicao"
+                       type="number"
+                       step="0.01"
+                       class="form-control"
+                       placeholder="0,00" />
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="form-section">
+
+        <div class="form-section-title">
+            Informações complementares
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group form-group-full">
+
+                <label asp-for="Leitura.Observacoes"
+                       class="form-label">
+                    Observações
+                </label>
+
+                <textarea asp-for="Leitura.Observacoes"
+                          class="form-control"
+                          placeholder="Informações adicionais sobre a leitura..."></textarea>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="form-actions">
+
+        <button type="submit"
+                asp-page-handler="Delete"
+                class="btn btn-danger">
+            Excluir
+        </button>
+
+        <a asp-page="Index"
+           class="btn btn-outline-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Salvar
+        </button>
+
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.DataLancamento" class="form-label"></label>
-        <input asp-for="Leitura.DataLancamento"
-               type="date"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.EstadoId" class="form-label">Estado</label>
-
-        <select asp-for="Leitura.EstadoId" class="form-select">
-            <option value="">Selecione um Estado</option>
-            @foreach (var estado in Model.Estados)
-            {
-                <option value="@estado.Id">@estado.Nome</option>
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.CodigoEAN" class="form-label">Código EAN</label>
-        <input asp-for="Leitura.CodigoEAN" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.DataAquisicao" class="form-label"></label>
-        <input asp-for="Leitura.DataAquisicao"
-               type="date"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.ValorAquisicao" class="form-label"></label>
-        <input asp-for="Leitura.ValorAquisicao"
-               type="number"
-               step="0.01"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.FranquiaId" class="form-label">Franquia</label>
-
-        <select asp-for="Leitura.FranquiaId" class="form-select">
-            <option value="">Sem franquia</option>
-
-            @foreach (var franquia in Model.Franquias)
-            {
-                <option value="@franquia.Id">@franquia.Nome</option>
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.Tipo" class="form-label">Tipo</label>
-
-        <select asp-for="Leitura.Tipo"
-                asp-items="Html.GetEnumSelectList<TipoLeitura>()"
-                class="form-select">
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.EditoraExteriorId" class="form-label">Editora Exterior</label>
-
-        <select asp-for="Leitura.EditoraExteriorId" class="form-select">
-            <option value="">Selecione uma Editora Exterior</option>
-
-            @foreach (var editoraExterior in Model.EditoraExterior)
-            {
-                <option value="@editoraExterior.Id">@editoraExterior.Nome</option>
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.EditoraBrasilId" class="form-label">Editora Brasil</label>
-
-        <select asp-for="Leitura.EditoraBrasilId" class="form-select">
-            <option value="">Selecione uma Editora Brasil</option>
-
-            @foreach (var editoraBrasil in Model.EditoraBrasil)
-            {
-                <option value="@editoraBrasil.Id">@editoraBrasil.Nome</option>
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.Autor" class="form-label"></label>
-        <input asp-for="Leitura.Autor" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.StatusId" class="form-label">Status</label>
-
-        <select asp-for="Leitura.StatusId" class="form-select">
-            <option value="">Selecione um Status</option>
-
-            @foreach (var status in Model.Status)
-            {
-                <option value="@status.Id">@status.Nome</option>
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.Lingua" class="form-label"></label>
-        <input asp-for="Leitura.Lingua" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.ISBN13" class="form-label">ISBN-13</label>
-        <input asp-for="Leitura.ISBN13" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.Volume" class="form-label"></label>
-        <input asp-for="Leitura.Volume"
-               type="number"
-               min="1"
-               step="1"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.VolumeAte" class="form-label"></label>
-        <input asp-for="Leitura.VolumeAte"
-               type="number"
-               min="1"
-               step="1"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Leitura.Observacoes" class="form-label">Observações</label>
-        <textarea asp-for="Leitura.Observacoes"
-                  class="form-control">
-            </textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary">
-        Salvar
-    </button>
-
-    <a asp-page="Index" class="btn btn-secondary">
-        Cancelar
-    </a>
-
-    <button type="submit"
-            asp-page-handler="Delete"
-            class="btn btn-danger">
-        Excluir
-    </button>
 
 </form>

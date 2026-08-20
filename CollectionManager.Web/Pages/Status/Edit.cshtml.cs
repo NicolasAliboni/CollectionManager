@@ -39,10 +39,7 @@ public class EditModel : PageModel
     {
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
-        var response = await client.PutAsJsonAsync(
-            $"api/Status/{Status.Id}",
-            Status
-        );
+        var response = await client.PutAsJsonAsync($"api/Status/{Status.Id}",Status);
 
         if (!response.IsSuccessStatusCode)
         {
