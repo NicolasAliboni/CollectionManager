@@ -63,6 +63,7 @@ public class EstadosController : ControllerBase
         }
 
         estadoExistente.Nome = estado.Nome;
+        estadoExistente.TipoColecao = estado.TipoColecao;
 
         await _context.SaveChangesAsync();
 

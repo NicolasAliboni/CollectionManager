@@ -8,7 +8,7 @@ public enum TipoItem
     Videogame = 4
 }
 
-public class Status
+public class Status : EntidadeBase
 {
     public int Id { get; set; }
     public string Nome { get; set; } = string.Empty;

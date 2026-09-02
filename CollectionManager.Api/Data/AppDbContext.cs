@@ -58,4 +58,26 @@ public class AppDbContext : DbContext
             .WithOne()
             .HasForeignKey<Leitura>(l => l.ItemId);
     }
+
+    public override async Task<int> SaveChangesAsync(
+    CancellationToken cancellationToken = default)
+    {
+        var entradas = ChangeTracker
+            .Entries<EntidadeBase>();
+
+        foreach (var entrada in entradas)
+        {
+            if (entrada.State == EntityState.Added)
+            {
+                entrada.Entity.DataCadastro = DateTime.UtcNow;
+            }
+
+            if (entrada.State == EntityState.Modified)
+            {
+                entrada.Entity.DataAtualizacao = DateTime.UtcNow;
+            }
+        }
+
+        return await base.SaveChangesAsync(cancellationToken);
+    }
 }

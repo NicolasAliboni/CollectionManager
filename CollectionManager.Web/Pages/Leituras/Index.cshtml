@@ -6,78 +6,92 @@
 }
 
 <div class="page-header d-flex justify-content-between align-items-center">
+
     <div>
         <h1>Leituras</h1>
+
         <p class="page-subtitle">
-            Visualize e gerencie seus mangás, quadrinhos e livros.
+            Visualize suas coleções de mangás, quadrinhos e livros.
         </p>
     </div>
 
-    <a asp-page="Create" class="btn btn-primary">
+    <a asp-page="Create"
+       class="btn btn-primary">
         + Adicionar Leitura
     </a>
+
 </div>
 
-<div class="table-card">
-    <div class="table-responsive">
-        <table class="table collection-table align-middle">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Franquia</th>
-                    <th>Editora Brasil</th>
-                    <th>Data Lançamento</th>
-                    <th>Status</th>
-                    <th>Estado</th>
-                    <th>Volume</th>
-                    <th>Volume Até</th>
-                    <th>Valor</th>
-                    <th class="text-end">Ações</th>
-                </tr>
-            </thead>
 
-            <tbody>
-                @foreach (var leitura in Model.Leituras)
-                {
-                    <tr>
-                        <td>
-                            <strong>@leitura.Item.Nome</strong>
-                        </td>
+@if (Model.Franquias.Count == 0)
+{
+    <div class="table-card p-4">
 
-                        <td>@(leitura.Item.Franquia?.Nome ?? "-")</td>
+        <h5>Nenhuma leitura cadastrada</h5>
 
-                        <td>@leitura.EditoraBrasil.Nome</td>
+        <p class="text-muted mb-0">
+            Adicione sua primeira leitura para começar sua coleção.
+        </p>
 
-                        <td>@leitura.Item.DataLancamento.ToString("dd/MM/yyyy")</td>
-
-                        <td>
-                            <span class="item-badge">
-                                @leitura.Status.Nome
-                            </span>
-                        </td>
-
-                        <td>@leitura.Item.Estado.Nome</td>
-
-                        <td>@leitura.Volume</td>
-
-                        <td>@leitura.VolumeAte</td>
-
-                        <td>
-                            @(leitura.Item.ValorAquisicao.HasValue
-                                ? leitura.Item.ValorAquisicao.Value.ToString("C")
-                                : "-")
-                        </td>
-
-                        <td class="text-end">
-                            <a asp-page="Edit"
-                               asp-route-id="@leitura.ItemId"
-                               class="btn btn-sm btn-outline-secondary">
-                                Editar
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
     </div>
-</div>
+}
+else
+{
+    <div class="collections-grid">
+
+        @foreach (var franquia in Model.Franquias)
+        {
+            <a asp-page="Franquia"
+               asp-route-id="@franquia.FranquiaId"
+               class="collection-card collection-card-link">
+
+                <div class="collection-card-icon">
+                    📚
+                </div>
+
+                <div class="collection-card-content">
+
+                    <h2>
+                        @franquia.Nome
+                    </h2>
+
+                    @if (franquia.FranquiaId.HasValue)
+                    {
+                        <p>
+                            @franquia.QuantidadeVolumes / @franquia.VolumeAte volumes
+                        </p>
+
+                        @if (franquia.QuantidadeVolumes >= franquia.VolumeAte)
+                        {
+                            <span class="collection-status collection-status-complete">
+                                Coleção completa
+                            </span>
+                        }
+                        else
+                        {
+                            var faltam = franquia.VolumeAte - franquia.QuantidadeVolumes;
+
+                            <span class="collection-status">
+                                Faltam @faltam volume@(faltam == 1 ? "" : "s")
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <p>
+                            @franquia.QuantidadeVolumes
+                            @(franquia.QuantidadeVolumes == 1 ? "item" : "itens")
+                        </p>
+                    }
+
+                    <span class="collection-card-action">
+                        Ver coleção →
+                    </span>
+
+                </div>
+
+            </a>
+        }
+
+    </div>
+}

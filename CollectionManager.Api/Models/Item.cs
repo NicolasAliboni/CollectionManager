@@ -1,6 +1,6 @@
 ﻿namespace CollectionManager.Api.Models
 {
-    public class Item
+    public class Item : EntidadeBase
     {
         public int Id { get; set; }
         public string Nome { get; set; } = string.Empty;

@@ -1,4 +1,5 @@
 @page
+@using CollectionManager.Web.ViewModels
 @model CollectionManager.Web.Pages.Estados.EditModel
 
 @{
@@ -39,6 +40,17 @@
                 <input asp-for="Estado.Nome"
                        class="form-control"
                        placeholder="Ex.: Novo" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Estado.TipoColecao" class="form-label">
+                    Coleção
+                </label>
+
+                <select asp-for="Estado.TipoColecao"
+                        asp-items="Html.GetEnumSelectList<TipoColecao>()"
+                        class="form-select">
+                </select>
             </div>
 
         </div>
