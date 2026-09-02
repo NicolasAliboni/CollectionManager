@@ -64,6 +64,7 @@ public class EditorasController : ControllerBase
 
         editoraExistente.Nome = editora.Nome;
         editoraExistente.Origem = editora.Origem;
+        editoraExistente.Ativo = editora.Ativo;
 
         await _context.SaveChangesAsync();
 

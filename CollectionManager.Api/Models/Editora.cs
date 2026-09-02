@@ -10,5 +10,6 @@
         public int Id { get; set; }
         public string Nome { get; set; } = string.Empty;
         public OrigemEditora Origem { get; set; }
+        public bool Ativo { get; set; }
     }
 }

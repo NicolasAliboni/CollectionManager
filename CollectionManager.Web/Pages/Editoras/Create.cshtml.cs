@@ -19,6 +19,7 @@ public class CreateModel : PageModel
 
     public void OnGet()
     {
+        Editora.Ativo = true;
     }
 
     public async Task<IActionResult> OnPostAsync()

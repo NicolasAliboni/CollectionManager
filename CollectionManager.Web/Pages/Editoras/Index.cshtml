@@ -25,6 +25,7 @@
                 <tr>
                     <th>Nome</th>
                     <th>Origem</th>
+                    <th>Ativo</th>
                     <th class="text-end">Ações</th>
                 </tr>
             </thead>
@@ -41,6 +42,13 @@
                             <span class="item-badge">
                                 @editora.Origem
                             </span>
+                        </td>
+
+                        <td>
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   checked="@editora.Ativo"
+                                   disabled />
                         </td>
 
                         <td class="text-end">

@@ -619,3 +619,8 @@ textarea.form-control {
     background: #eaf8ef;
     color: #297a47;
 }
+
+.collection-table .form-check-input:disabled {
+    opacity: 1;
+    cursor: default;
+}
