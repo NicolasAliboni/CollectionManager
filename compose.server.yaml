@@ -1,0 +1,70 @@
+name: collectionmanager
+
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: collectionmanager
+      POSTGRES_USER: collectionmanager
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  api:
+    build:
+      context: .
+      dockerfile: CollectionManager.Api/Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: "8080"
+      DisableHttpsRedirection: "true"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=collectionmanager;Username=collectionmanager;Password=${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+  web:
+    build:
+      context: .
+      dockerfile: CollectionManager.Web/Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ApiSettings__BaseUrl: http://api:8080/
+      DisableHttpsRedirection: "true"
+    ports:
+      - "8080:8080"
+    volumes:
+      - web_keys:/home/app/.aspnet/DataProtection-Keys
+    depends_on:
+      api:
+        condition: service_started
+
+  migrate:
+    build:
+      context: .
+      dockerfile: CollectionManager.Api/Dockerfile
+    restart: "no"
+    entrypoint: ["/app/efbundle"]
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      DOTNET_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=collectionmanager;Username=collectionmanager;Password=${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  web_keys:
