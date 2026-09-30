@@ -13,6 +13,9 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 ENV ASPNETCORE_HTTP_PORTS=8080
+RUN mkdir -p /home/app/.aspnet/DataProtection-Keys \
+    && chown -R app:app /home/app/.aspnet \
+    && chmod 700 /home/app/.aspnet/DataProtection-Keys
 USER app
 EXPOSE 8080
 
