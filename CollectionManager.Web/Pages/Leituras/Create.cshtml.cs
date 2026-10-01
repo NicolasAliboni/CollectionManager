@@ -18,18 +18,22 @@ public class CreateModel : PageModel
     public LeituraFormViewModel Leitura { get; set; } = new();
 
     public List<EstadoViewModel> Estados { get; set; } = [];
-    public List<FranquiaViewModel> Franquias { get; set; } = [];
-    public List<EditoraViewModel> EditoraExterior { get; set; } = [];
-    public List<EditoraViewModel> EditoraBrasil { get; set; } = [];
-    public List<StatusViewModel> Status { get; set; } = [];
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(int colecaoLeituraId)
     {
+        Leitura.ColecaoLeituraId = colecaoLeituraId;
+
         await CarregarListasAsync();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!ModelState.IsValid)
+        {
+            await CarregarListasAsync();
+            return Page();
+        }
+
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
         var response = await client.PostAsJsonAsync(
@@ -37,39 +41,30 @@ public class CreateModel : PageModel
 
         if (!response.IsSuccessStatusCode)
         {
-            await CarregarListasAsync();
+            ModelState.AddModelError(
+                string.Empty,
+                "Não foi possível cadastrar o volume. Verifique os dados.");
 
+            await CarregarListasAsync();
             return Page();
         }
 
-        return RedirectToPage("Index");
+        return RedirectToPage(
+            "Colecao",
+            new { id = Leitura.ColecaoLeituraId });
     }
 
     private async Task CarregarListasAsync()
     {
-
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
-        Estados = await client.GetFromJsonAsync<List<EstadoViewModel>>(
-            "api/Estados"
-        ) ?? [];
+        var todosEstados = await client
+            .GetFromJsonAsync<List<EstadoViewModel>>(
+                "api/Estados"
+            ) ?? [];
 
-        Franquias = await client.GetFromJsonAsync<List<FranquiaViewModel>>(
-            "api/Franquias"
-        ) ?? [];
-
-        var todasEditoras = await client.GetFromJsonAsync<List<EditoraViewModel>>("api/Editoras") ?? [];
-
-        EditoraExterior = todasEditoras.Where(e => e.Origem == OrigemEditora.Exterior).ToList();
-
-        EditoraBrasil = todasEditoras.Where(e => e.Origem == OrigemEditora.Brasil).ToList();
-
-        var todosStatus = await client.GetFromJsonAsync<List<StatusViewModel>>(
-            "api/Status"
-        ) ?? [];
-
-        Status = todosStatus
-            .Where(s => s.Tipo == TipoItem.Leitura)
+        Estados = todosEstados
+            .Where(e => e.TipoColecao == TipoColecao.Leitura)
             .ToList();
     }
 }

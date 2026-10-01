@@ -1,0 +1,181 @@
+@page
+@model CollectionManager.Web.Pages.Leituras.CreateColecaoModel
+
+@{
+    ViewData["Title"] = "Adicionar coleção";
+}
+
+<div class="form-page-header">
+    <a asp-page="Index" class="form-back-link">
+        ← Voltar para Leituras
+    </a>
+
+    <h1>Adicionar coleção</h1>
+
+    <p class="form-page-subtitle">
+        Cadastre as informações compartilhadas pelos volumes.
+    </p>
+</div>
+
+<form method="post" class="form-card">
+    <div asp-validation-summary="All"
+         class="text-danger"
+         role="alert"></div>
+
+    <section class="form-section">
+        <div class="form-section-title">
+            Informações da coleção
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="Colecao.Nome" class="form-label">
+                    Nome
+                </label>
+
+                <input asp-for="Colecao.Nome"
+                       class="form-control"
+                       placeholder="Ex.: Berserk"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.Tipo" class="form-label">
+                    Tipo
+                </label>
+
+                <select asp-for="Colecao.Tipo"
+                        class="form-select"
+                        required>
+                    <option value="">Selecione um tipo</option>
+                    <option value="1">Mangá</option>
+                    <option value="2">Quadrinho</option>
+                    <option value="3">Livro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.FranquiaId" class="form-label">
+                    Franquia
+                </label>
+
+                <select asp-for="Colecao.FranquiaId"
+                        class="form-select">
+                    <option value="">Sem franquia</option>
+
+                    @foreach (var franquia in Model.Franquias)
+                    {
+                        <option value="@franquia.Id">
+                            @franquia.Nome
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.Autor" class="form-label">
+                    Autor
+                </label>
+
+                <input asp-for="Colecao.Autor"
+                       class="form-control"
+                       placeholder="Nome do autor"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.EditoraExteriorId"
+                       class="form-label">
+                    Editora exterior
+                </label>
+
+                <select asp-for="Colecao.EditoraExteriorId"
+                        class="form-select"
+                        required>
+                    <option value="">Selecione uma editora</option>
+
+                    @foreach (var editora in Model.EditorasExterior)
+                    {
+                        <option value="@editora.Id">
+                            @editora.Nome
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.EditoraBrasilId"
+                       class="form-label">
+                    Editora Brasil
+                </label>
+
+                <select asp-for="Colecao.EditoraBrasilId"
+                        class="form-select"
+                        required>
+                    <option value="">Selecione uma editora</option>
+
+                    @foreach (var editora in Model.EditorasBrasil)
+                    {
+                        <option value="@editora.Id">
+                            @editora.Nome
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.Lingua" class="form-label">
+                    Idioma
+                </label>
+
+                <input asp-for="Colecao.Lingua"
+                       class="form-control"
+                       placeholder="Ex.: Português"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.VolumeAte" class="form-label">
+                    Total previsto de volumes
+                </label>
+
+                <input asp-for="Colecao.VolumeAte" onfocus="this.select()"
+                       type="number"
+                       min="0"
+                       step="1"
+                       class="form-control"
+                       aria-describedby="volume-ajuda"
+                       required />
+
+                <small id="volume-ajuda" class="text-muted">
+                    Use 0 quando o total ainda não for conhecido.
+                </small>
+            </div>
+
+            <div class="form-group form-group-full">
+                <label asp-for="Colecao.Observacoes" class="form-label">
+                    Observações
+                </label>
+
+                <textarea asp-for="Colecao.Observacoes"
+                          class="form-control"
+                          rows="4"
+                          placeholder="Informações gerais da coleção"></textarea>
+            </div>
+        </div>
+    </section>
+
+    <div class="form-actions">
+        <a asp-page="Index" class="btn btn-outline-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit" class="btn btn-primary">
+            Salvar coleção
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

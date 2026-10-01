@@ -1,97 +1,80 @@
 ﻿@page
 @model CollectionManager.Web.Pages.Leituras.IndexModel
+@using CollectionManager.Web.ViewModels
 
 @{
     ViewData["Title"] = "Leituras";
 }
 
 <div class="page-header d-flex justify-content-between align-items-center">
-
     <div>
         <h1>Leituras</h1>
 
         <p class="page-subtitle">
-            Visualize suas coleções de mangás, quadrinhos e livros.
+            Suas coleções de mangás, quadrinhos e livros.
         </p>
     </div>
 
-    <a asp-page="Create"
-       class="btn btn-primary">
-        + Adicionar Leitura
+    <a asp-page="CreateColecao" class="btn btn-primary">
+        + Adicionar coleção
     </a>
-
 </div>
 
-
-@if (Model.Franquias.Count == 0)
+@if (Model.Colecoes.Count == 0)
 {
     <div class="table-card p-4">
-
-        <h5>Nenhuma leitura cadastrada</h5>
+        <h5>Nenhuma coleção cadastrada</h5>
 
         <p class="text-muted mb-0">
-            Adicione sua primeira leitura para começar sua coleção.
+            Adicione uma coleção e cadastre os volumes dentro dela.
         </p>
-
     </div>
 }
 else
 {
     <div class="collections-grid">
-
-        @foreach (var franquia in Model.Franquias)
+        @foreach (var colecao in Model.Colecoes)
         {
-            <a asp-page="Franquia"
-               asp-route-id="@franquia.FranquiaId"
+            var tipoTexto = colecao.Tipo switch
+            {
+                TipoLeitura.Manga => "Mangá",
+                TipoLeitura.Quadrinho => "Quadrinho",
+                TipoLeitura.Livro => "Livro",
+                _ => "Leitura"
+            };
+
+            <a asp-page="Colecao"
+               asp-route-id="@colecao.Id"
                class="collection-card collection-card-link">
 
-                <div class="collection-card-icon">
+                <div class="collection-card-icon" aria-hidden="true">
                     📚
                 </div>
 
                 <div class="collection-card-content">
+                    <h2>@colecao.Nome</h2>
 
-                    <h2>
-                        @franquia.Nome
-                    </h2>
+                    <p>@tipoTexto</p>
 
-                    @if (franquia.FranquiaId.HasValue)
+                    @if (!string.IsNullOrWhiteSpace(colecao.Autor))
                     {
-                        <p>
-                            @franquia.QuantidadeVolumes / @franquia.VolumeAte volumes
-                        </p>
-
-                        @if (franquia.QuantidadeVolumes >= franquia.VolumeAte)
-                        {
-                            <span class="collection-status collection-status-complete">
-                                Coleção completa
-                            </span>
-                        }
-                        else
-                        {
-                            var faltam = franquia.VolumeAte - franquia.QuantidadeVolumes;
-
-                            <span class="collection-status">
-                                Faltam @faltam volume@(faltam == 1 ? "" : "s")
-                            </span>
-                        }
+                        <p>@colecao.Autor</p>
                     }
-                    else
+
+                    @if (colecao.VolumeAte > 0)
                     {
                         <p>
-                            @franquia.QuantidadeVolumes
-                            @(franquia.QuantidadeVolumes == 1 ? "item" : "itens")
+                            Total previsto:
+                            @colecao.VolumeAte
+                            @(colecao.VolumeAte == 1 ? "volume" : "volumes")
                         </p>
                     }
 
                     <span class="collection-card-action">
                         Ver coleção →
                     </span>
-
                 </div>
-
             </a>
         }
-
     </div>
 }

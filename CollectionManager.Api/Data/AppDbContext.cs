@@ -21,6 +21,7 @@ public class AppDbContext : DbContext
     public DbSet<Jogo> Jogos { get; set; }
     public DbSet<Videogame> Videogames { get; set; }
     public DbSet<Leitura> Leituras { get; set; }
+    public DbSet<ColecaoLeitura> ColecaoLeitura { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -51,12 +52,13 @@ public class AppDbContext : DbContext
             .HasForeignKey<Videogame>(i => i.ItemId);
 
         modelBuilder.Entity<Leitura>()
-            .HasKey(l => l.ItemId);
+            .HasKey(l => l.Id);
 
         modelBuilder.Entity<Leitura>()
-            .HasOne(l => l.Item)
-            .WithOne()
-            .HasForeignKey<Leitura>(l => l.ItemId);
+            .HasOne(l => l.ColecaoLeitura)
+            .WithMany()
+            .HasForeignKey(l => l.ColecaoLeituraId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     public override async Task<int> SaveChangesAsync(
@@ -70,6 +72,7 @@ public class AppDbContext : DbContext
             if (entrada.State == EntityState.Added)
             {
                 entrada.Entity.DataCadastro = DateTime.UtcNow;
+                entrada.Entity.DataAtualizacao = DateTime.UtcNow;
             }
 
             if (entrada.State == EntityState.Modified)

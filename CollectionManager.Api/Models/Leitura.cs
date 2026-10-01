@@ -1,27 +1,27 @@
 ﻿namespace CollectionManager.Api.Models
 {
-    public enum TipoLeitura
+    public enum StatusLeitura
     {
-        Manga = 1,
-        Quadrinho = 2,
-        Livro = 3
+        ALer = 1,
+        Lendo = 2,
+        Lido = 3
     }
-    public class Leitura
 
+    public class Leitura : EntidadeBase
     {
-        public int ItemId { get; set; }
-        public Item Item { get; set; } = null!;
-        public TipoLeitura Tipo { get; set; }
-        public int EditoraExteriorId { get; set; }
-        public Editora EditoraExterior { get; set; } = null!;
-        public int EditoraBrasilId { get; set; }
-        public Editora EditoraBrasil { get; set; } = null!;
-        public string Autor { get; set; } = string.Empty;
-        public int StatusId { get; set; }
-        public Status Status { get; set; } = null!;
-        public string Lingua { get; set; } = string.Empty;
+        public int Id { get; set; }
+        public int ColecaoLeituraId { get; set; }
+        public ColecaoLeitura ColecaoLeitura { get; set; } = null!;
+        public string? Titulo { get; set; }
+        public DateOnly DataLancamento { get; set; }
+        public DateOnly DataAquisicao { get; set; }
+        public StatusLeitura Status { get; set; }
+        public int EstadoId { get; set; }
+        public Estado Estado { get; set; } = null!;
+        public string? CodigoEAN { get; set; }
         public string? ISBN13 { get; set; }
-        public int Volume { get; set; }
-        public int VolumeAte { get; set; }
+        public decimal Volume { get; set; }
+        public decimal? ValorAquisicao { get; set; }
+        public string? Observacoes { get; set; }
     }
 }

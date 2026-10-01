@@ -15,17 +15,13 @@ public class EditModel : PageModel
     }
 
     [BindProperty]
-    public int ItemId { get; set; }
+    public int Id { get; set; }
 
     [BindProperty]
     public LeituraFormViewModel Leitura { get; set; } = new();
 
     public List<EstadoViewModel> Estados { get; set; } = [];
-    public List<FranquiaViewModel> Franquias { get; set; } = [];
-    public List<EditoraViewModel> EditoraExterior { get; set; } = [];
-    public List<EditoraViewModel> EditoraBrasil { get; set; } = [];
-    public List<StatusViewModel> Status { get; set; } = [];
-
+    
     public async Task<IActionResult> OnGetAsync(int id)
     {
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
@@ -39,27 +35,21 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        ItemId = leitura.ItemId;
+        Id = leitura.Id;
 
         Leitura = new LeituraFormViewModel
         {
-            Nome = leitura.Item.Nome,
-            DataLancamento = leitura.Item.DataLancamento,
-            EstadoId = leitura.Item.EstadoId,
-            CodigoEAN = leitura.Item.CodigoEAN,
-            DataAquisicao = leitura.Item.DataAquisicao,
-            ValorAquisicao = leitura.Item.ValorAquisicao,
-            FranquiaId = leitura.Item.FranquiaId,
-            Observacoes = leitura.Item.Observacoes,
-            Tipo = leitura.Tipo,
-            EditoraExteriorId = leitura.EditoraExteriorId,
-            EditoraBrasilId = leitura.EditoraBrasilId,
-            Autor = leitura.Autor,
-            StatusId = leitura.StatusId,
-            Lingua = leitura.Lingua,
+            ColecaoLeituraId = leitura.ColecaoLeituraId,
+            Titulo = leitura.Titulo,
+            DataLancamento = leitura.DataLancamento,
+            DataAquisicao = leitura.DataAquisicao,
+            Status = leitura.Status,
+            EstadoId = leitura.EstadoId,
+            CodigoEAN = leitura.CodigoEAN,
             ISBN13 = leitura.ISBN13,
             Volume = leitura.Volume,
-            VolumeAte = leitura.VolumeAte
+            ValorAquisicao = leitura.ValorAquisicao,
+            Observacoes = leitura.Observacoes
         };
 
         await CarregarListasAsync();
@@ -69,18 +59,30 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var client = _httpClientFactory.CreateClient("CollectionManagerApi");
-
-        var response = await client.PutAsJsonAsync(
-            $"api/Leituras/{ItemId}", Leitura);
-
-        if (!response.IsSuccessStatusCode)
+        if (!ModelState.IsValid)
         {
             await CarregarListasAsync();
             return Page();
         }
 
-        return RedirectToPage("Index");
+        var client = _httpClientFactory.CreateClient("CollectionManagerApi");
+
+        var response = await client.PutAsJsonAsync(
+            $"api/Leituras/{Id}", Leitura);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            ModelState.AddModelError(
+                string.Empty,
+                "Não foi possível salvar o volume. Verifique os dados.");
+
+            await CarregarListasAsync();
+            return Page();
+        }
+
+        return RedirectToPage(
+            "Colecao",
+            new { id = Leitura.ColecaoLeituraId });
     }
 
     public async Task<IActionResult> OnPostDeleteAsync()
@@ -88,16 +90,19 @@ public class EditModel : PageModel
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
         var response = await client.DeleteAsync(
-            $"api/Leituras/{ItemId}"
+            $"api/Leituras/{Id}"
         );
 
         if (!response.IsSuccessStatusCode)
         {
+            ModelState.AddModelError(string.Empty,
+                "Não foi possível excluir o volume. Verifique os dados.");
+
             await CarregarListasAsync();
             return Page();
         }
 
-        return RedirectToPage("Index");
+        return RedirectToPage("Colecao",new { id = Leitura.ColecaoLeituraId });
     }
 
     private async Task CarregarListasAsync()
@@ -105,26 +110,12 @@ public class EditModel : PageModel
 
         var client = _httpClientFactory.CreateClient("CollectionManagerApi");
 
-        Estados = await client.GetFromJsonAsync<List<EstadoViewModel>>(
-            "api/Estados"
-        ) ?? [];
+        var todosEstados = await client
+            .GetFromJsonAsync<List<EstadoViewModel>>(
+            "api/Estados") ?? [];
 
-        Franquias = await client.GetFromJsonAsync<List<FranquiaViewModel>>(
-            "api/Franquias"
-        ) ?? [];
-
-        var todasEditoras = await client.GetFromJsonAsync<List<EditoraViewModel>>("api/Editoras") ?? [];
-
-        EditoraExterior = todasEditoras.Where(e => e.Origem == OrigemEditora.Exterior).ToList();
-
-        EditoraBrasil = todasEditoras.Where(e => e.Origem == OrigemEditora.Brasil).ToList();
-
-        var todosStatus = await client.GetFromJsonAsync<List<StatusViewModel>>(
-            "api/Status"
-        ) ?? [];
-
-        Status = todosStatus
-            .Where(s => s.Tipo == TipoItem.Leitura)
+        Estados = todosEstados
+            .Where(e => e.TipoColecao == TipoColecao.Leitura)
             .ToList();
     }
 }

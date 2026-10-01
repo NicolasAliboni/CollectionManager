@@ -1,0 +1,328 @@
+@page "{id:int}"
+@model CollectionManager.Web.Pages.Leituras.ColecaoModel
+@using CollectionManager.Web.ViewModels
+
+@{
+    ViewData["Title"] = Model.Colecao.Nome;
+}
+
+<div class="page-header">
+    <a asp-page="Index" class="form-back-link">
+        ← Voltar para Leituras
+    </a>
+
+    <h1>@Model.Colecao.Nome</h1>
+
+    <p class="page-subtitle">
+        Informações da coleção e seus volumes.
+    </p>
+</div>
+
+<div asp-validation-summary="All"
+     class="text-danger"
+     role="alert"></div>
+
+<form method="post"
+      asp-page-handler="Salvar"
+      asp-route-id="@Model.Id"
+      id="form-colecao"
+      class="form-card">
+
+    <fieldset id="campos-colecao" class="form-section"
+              disabled="@(!Model.EmEdicao)">
+        <legend class="form-section-title">
+            Informações da coleção
+        </legend>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="Colecao.Nome" class="form-label">
+                    Nome
+                </label>
+                <input asp-for="Colecao.Nome"
+                       class="form-control"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.Tipo" class="form-label">
+                    Tipo
+                </label>
+                <select asp-for="Colecao.Tipo"
+                        class="form-select"
+                        required>
+                    <option value="">Selecione um tipo</option>
+                    <option value="1">Mangá</option>
+                    <option value="2">Quadrinho</option>
+                    <option value="3">Livro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.FranquiaId" class="form-label">
+                    Franquia
+                </label>
+                <select asp-for="Colecao.FranquiaId"
+                        class="form-select">
+                    <option value="">Sem franquia</option>
+
+                    @foreach (var franquia in Model.Franquias)
+                    {
+                        <option value="@franquia.Id">
+                            @franquia.Nome
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.Autor" class="form-label">
+                    Autor
+                </label>
+                <input asp-for="Colecao.Autor"
+                       class="form-control"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.EditoraExteriorId"
+                       class="form-label">
+                    Editora exterior
+                </label>
+                <select asp-for="Colecao.EditoraExteriorId"
+                        class="form-select"
+                        required>
+                    <option value="">Selecione uma editora</option>
+
+                    @foreach (var editora in Model.EditorasExterior)
+                    {
+                        <option value="@editora.Id">
+                            @editora.Nome
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.EditoraBrasilId"
+                       class="form-label">
+                    Editora Brasil
+                </label>
+                <select asp-for="Colecao.EditoraBrasilId"
+                        class="form-select"
+                        required>
+                    <option value="">Selecione uma editora</option>
+
+                    @foreach (var editora in Model.EditorasBrasil)
+                    {
+                        <option value="@editora.Id">
+                            @editora.Nome
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.Lingua" class="form-label">
+                    Idioma
+                </label>
+                <input asp-for="Colecao.Lingua"
+                       class="form-control"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Colecao.VolumeAte" class="form-label">
+                    Total previsto de volumes
+                </label>
+                <input asp-for="Colecao.VolumeAte" onfocus="this.select()"
+                       type="number"
+                       min="0"
+                       step="1"
+                       class="form-control"
+                       aria-describedby="volume-ajuda"
+                       required />
+
+                <small id="volume-ajuda" class="text-muted">
+                    Use 0 quando o total ainda não for conhecido.
+                </small>
+            </div>
+
+            <div class="form-group form-group-full">
+                <label asp-for="Colecao.Observacoes" class="form-label">
+                    Observações
+                </label>
+                <textarea asp-for="Colecao.Observacoes"
+                          class="form-control"
+                          rows="4"></textarea>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="form-actions">
+        <button type="button"
+                id="editar-colecao"
+                class="btn btn-outline-secondary"
+                hidden="@Model.EmEdicao"
+                aria-controls="campos-colecao">
+            Editar coleção
+        </button>
+
+        <button type="submit"
+                id="salvar-colecao"
+                class="btn btn-primary"
+                hidden="@(!Model.EmEdicao)">
+            Salvar
+        </button>
+
+        <a asp-page="Colecao"
+           asp-route-id="@Model.Id"
+           id="cancelar-edicao"
+           class="btn btn-outline-secondary"
+           hidden="@(!Model.EmEdicao)">
+            Cancelar
+        </a>
+    </div>
+</form>
+
+<form method="post"
+      asp-page-handler="Excluir"
+      asp-route-id="@Model.Id"
+      id="form-excluir-colecao"
+      class="mt-3"
+      hidden="@Model.EmEdicao">
+    <button type="submit" class="btn btn-outline-danger">
+        Excluir coleção
+    </button>
+</form>
+
+<section class="mt-4">
+    <div class="page-header d-flex justify-content-between align-items-center">
+        <div>
+            <h2>Volumes</h2>
+            <p class="page-subtitle">
+                @Model.Leituras.Count
+                @(Model.Leituras.Count == 1
+                    ? "exemplar cadastrado"
+                    : "exemplares cadastrados")
+            </p>
+        </div>
+
+        <a asp-page="Create"
+           asp-route-colecaoLeituraId="@Model.Id"
+           class="btn btn-primary">
+            + Adicionar volume
+        </a>
+    </div>
+
+    @if (Model.Leituras.Count == 0)
+    {
+        <div class="table-card p-4">
+            <h5>Nenhum volume cadastrado</h5>
+            <p class="text-muted mb-0">
+                Adicione o primeiro volume desta coleção.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="table-card">
+            <div class="table-responsive">
+                <table class="table collection-table align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">Volume</th>
+                            <th scope="col">Título</th>
+                            <th scope="col">Lançamento</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Valor de aquisição</th>
+                            <th scope="col" class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var leitura in Model.Leituras)
+                        {
+                            var statusTexto = leitura.Status switch
+                            {
+                                StatusLeitura.ALer => "A ler",
+                                StatusLeitura.Lendo => "Lendo",
+                                StatusLeitura.Lido => "Lido",
+                                _ => "Não informado"
+                            };
+
+                            <tr>
+                                <td>
+                                    <strong>@leitura.Volume.ToString("0.############################")</strong>
+                                </td>
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(leitura.Titulo)
+                                        ? "—"
+                                        : leitura.Titulo)
+                                </td>
+                                <td>
+                                    @leitura.DataLancamento.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    <span class="item-badge">
+                                        @statusTexto
+                                    </span>
+                                </td>
+                                <td>@leitura.Estado.Nome</td>
+                                <td>
+                                    @(leitura.ValorAquisicao?.ToString(
+                                        "C",
+                                        System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))
+                                        ?? "—")
+                                </td>
+                                <td class="text-end">
+                                    <a asp-page="Edit"
+                                       asp-route-id="@leitura.Id"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        Editar volume
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        (() => {
+            const campos = document.getElementById("campos-colecao");
+            const editar = document.getElementById("editar-colecao");
+            const salvar = document.getElementById("salvar-colecao");
+            const cancelar = document.getElementById("cancelar-edicao");
+            const excluir = document.getElementById("form-excluir-colecao");
+
+            editar.addEventListener("click", () => {
+                campos.disabled = false;
+                editar.hidden = true;
+                salvar.hidden = false;
+                cancelar.hidden = false;
+                excluir.hidden = true;
+
+                document.getElementById("Colecao_Nome").focus();
+            });
+
+            excluir.addEventListener("submit", (event) => {
+                const confirmado = window.confirm(
+                    "Excluir esta coleção e todos os volumes vinculados? " +
+                    "Esta ação não pode ser desfeita pela aplicação."
+                );
+
+                if (!confirmado) {
+                    event.preventDefault();
+                }
+            });
+        })();
+    </script>
+}

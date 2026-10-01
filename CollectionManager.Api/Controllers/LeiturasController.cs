@@ -19,16 +19,19 @@ public class LeiturasController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] int colecaoLeituraId)
     {
+        var colecaoExiste = await _context.ColecaoLeitura
+            .AnyAsync(c => c.Id == colecaoLeituraId);
+        if (!colecaoExiste)
+        {
+            return NotFound("Coleção não encontrada.");
+        }
+
         var leituras = await _context.Leituras
-            .Include(l => l.Item)
-                .ThenInclude(i => i.Estado)
-            .Include(l => l.Item)
-                .ThenInclude(i => i.Franquia)
-            .Include(l => l.EditoraExterior)
-            .Include(l => l.EditoraBrasil)
-            .Include(l => l.Status)
+            .Where(l => l.ColecaoLeituraId == colecaoLeituraId)
+            .Include(l => l.Estado)
+            .OrderBy(l => l.Volume)
             .ToListAsync();
 
         return Ok(leituras);
@@ -38,14 +41,8 @@ public class LeiturasController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var leitura = await _context.Leituras
-            .Include(l => l.Item)
-                .ThenInclude(i => i.Estado)
-            .Include(l => l.Item)
-                .ThenInclude(i => i.Franquia)
-            .Include(l => l.EditoraExterior)
-            .Include(l => l.EditoraBrasil)
-            .Include(l => l.Status)
-            .FirstOrDefaultAsync(l => l.ItemId == id);
+            .Include(l => l.Estado)
+            .FirstOrDefaultAsync(l => l.Id == id);
 
         if (leitura == null)
         {
@@ -58,81 +55,44 @@ public class LeiturasController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(LeituraCreateDto dto)
     {
+        var colecaoLeituraExistente = await _context.ColecaoLeitura
+            .FindAsync(dto.ColecaoLeituraId);
+
+        if (colecaoLeituraExistente == null)
+        {
+            return NotFound("Coleção não Encontrada");
+        }
+
+        if (!Enum.IsDefined(typeof(StatusLeitura), dto.Status))
+        {
+            return BadRequest("Status de leitura inválido.");
+        }
+
         var estadoExiste = await _context.Estados
-            .AnyAsync(e => e.Id == dto.EstadoId);
+           .AnyAsync(e => e.Id == dto.EstadoId);
 
         if (!estadoExiste)
         {
             return BadRequest("Estado não Encontrado");
         }
 
-        if (dto.FranquiaId.HasValue)
-        {
-            var franquiaExiste = await _context.Franquias
-            .AnyAsync(e => e.Id == dto.FranquiaId.Value);
-
-            if (!franquiaExiste)
-            {
-                return BadRequest("Franquia não Encontrada");
-            }
-        }
-
-        var editoraExteriorExiste = await _context.Editoras
-            .AnyAsync(e =>e.Id == dto.EditoraExteriorId && e.Origem == OrigemEditora.Exterior);
-
-        if (!editoraExteriorExiste)
-        {
-            return BadRequest("Editora Exterior não Encontrada");
-        }
-
-        var editoraBrasilExiste = await _context.Editoras
-            .AnyAsync(e =>e.Id == dto.EditoraBrasilId && e.Origem == OrigemEditora.Brasil);
-
-        if (!editoraBrasilExiste)
-        {
-            return BadRequest("Editora Brasil não Encontrada");
-        }
-
-        var statusExiste = await _context.Status
-            .AnyAsync(e => e.Id == dto.StatusId);
-
-        if (!statusExiste)
-        {
-            return BadRequest("Status não Encontrado");
-        }
-
         await using var transaction = await _context.Database.BeginTransactionAsync();
 
         try
         {
-            var item = new Item
-            {
-                Nome = dto.Nome,
-                DataLancamento = dto.DataLancamento,
-                EstadoId = dto.EstadoId,
-                CodigoEAN = dto.CodigoEAN,
-                DataAquisicao = dto.DataAquisicao,
-                ValorAquisicao = dto.ValorAquisicao,
-                FranquiaId = dto.FranquiaId,
-                Observacoes = dto.Observacoes
-            };
-
-            _context.Itens.Add(item);
-
-            await _context.SaveChangesAsync();
-
             var leitura = new Leitura
             {
-                ItemId = item.Id,
-                Tipo = dto.Tipo,
-                EditoraExteriorId = dto.EditoraExteriorId,
-                EditoraBrasilId = dto.EditoraBrasilId,
-                Autor = dto.Autor,
-                StatusId = dto.StatusId,
-                Lingua = dto.Lingua,
+                ColecaoLeituraId = dto.ColecaoLeituraId,
+                Titulo = dto.Titulo,
+                DataLancamento = dto.DataLancamento,
+                DataAquisicao = dto.DataAquisicao,
+                Status = dto.Status,
+                EstadoId = dto.EstadoId,
+                CodigoEAN = dto.CodigoEAN,
                 ISBN13 = dto.ISBN13,
                 Volume = dto.Volume,
-                VolumeAte = dto.VolumeAte
+                ValorAquisicao = dto.ValorAquisicao,
+                Observacoes = dto.Observacoes
             };
 
             _context.Leituras.Add(leitura);
@@ -141,10 +101,10 @@ public class LeiturasController : ControllerBase
 
             await transaction.CommitAsync();
 
-            return CreatedAtAction(nameof(GetById), new { id = item.Id }, new
+            return CreatedAtAction(nameof(GetById), new { id = leitura.Id }, new
             {
-                item.Id,
-                item.Nome,
+                leitura.Id,
+                leitura.Volume,
             }
             );
         }
@@ -158,79 +118,40 @@ public class LeiturasController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, LeituraCreateDto dto)
     {
-        var itemExistente = await _context.Itens.FindAsync(id);
         var leituraExistente = await _context.Leituras.FindAsync(id);
-
-        if (itemExistente == null)
-        {
-            return NotFound("Item de Leitura não Encontrado");
-        }
 
         if (leituraExistente == null)
         {
-            return NotFound("Leitura não Encontrada");
+            return NotFound("Leitura não encontrada.");
+        }
+
+        if (dto.ColecaoLeituraId != leituraExistente.ColecaoLeituraId)
+        {
+            return BadRequest("Não é permitido alterar a coleção do volume.");
+        }
+
+        if (!Enum.IsDefined(typeof(StatusLeitura), dto.Status))
+        {
+            return BadRequest("Status de leitura inválido.");
         }
 
         var estadoExiste = await _context.Estados
             .AnyAsync(e => e.Id == dto.EstadoId);
-
         if (!estadoExiste)
         {
             return BadRequest("Estado não Encontrado");
         }
 
-        if (dto.FranquiaId.HasValue)
-        {
-            var franquiaExiste = await _context.Franquias
-            .AnyAsync(e => e.Id == dto.FranquiaId);
-
-            if (!franquiaExiste)
-            {
-                return BadRequest("Franquia não Encontrada");
-            }
-        }
-
-        var editoraExteriorExiste = await _context.Editoras
-            .AnyAsync(e => e.Id == dto.EditoraExteriorId && e.Origem == OrigemEditora.Exterior);
-
-        if (!editoraExteriorExiste)
-        {
-            return BadRequest("Editora Exterior não Encontrada");
-        }
-
-        var editoraBrasilExiste = await _context.Editoras
-            .AnyAsync(e => e.Id == dto.EditoraBrasilId && e.Origem == OrigemEditora.Brasil);
-
-        if (!editoraBrasilExiste)
-        {
-            return BadRequest("Editora Brasil não Encontrada");
-        }
-
-        var statusExiste = await _context.Status
-            .AnyAsync(e => e.Id == dto.StatusId);
-
-        if (!statusExiste)
-        {
-            return BadRequest("Status não Encontrado");
-        }
-
-        itemExistente.Nome = dto.Nome;
-        itemExistente.DataLancamento = dto.DataLancamento;
-        itemExistente.EstadoId = dto.EstadoId;
-        itemExistente.CodigoEAN = dto.CodigoEAN;
-        itemExistente.DataAquisicao = dto.DataAquisicao;
-        itemExistente.ValorAquisicao = dto.ValorAquisicao;
-        itemExistente.FranquiaId = dto.FranquiaId;
-        itemExistente.Observacoes = dto.Observacoes;
-        leituraExistente.Tipo = dto.Tipo;
-        leituraExistente.EditoraExteriorId = dto.EditoraExteriorId;
-        leituraExistente.EditoraBrasilId = dto.EditoraBrasilId;
-        leituraExistente.Autor = dto.Autor;
-        leituraExistente.StatusId = dto.StatusId;
-        leituraExistente.Lingua = dto.Lingua;
+        leituraExistente.Titulo = dto.Titulo;
+        leituraExistente.DataLancamento = dto.DataLancamento;
+        leituraExistente.DataAquisicao = dto.DataAquisicao;
+        leituraExistente.Status = dto.Status;
+        leituraExistente.EstadoId = dto.EstadoId;
+        leituraExistente.CodigoEAN = dto.CodigoEAN;
         leituraExistente.ISBN13 = dto.ISBN13;
         leituraExistente.Volume = dto.Volume;
-        leituraExistente.VolumeAte = dto.VolumeAte;
+        leituraExistente.ValorAquisicao = dto.ValorAquisicao;
+        leituraExistente.Observacoes = dto.Observacoes;
 
         await _context.SaveChangesAsync();
 
@@ -240,13 +161,7 @@ public class LeiturasController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var item = await _context.Itens.FindAsync(id);
         var leitura = await _context.Leituras.FindAsync(id);
-
-        if (item == null)
-        {
-            return NotFound("Item de Leitura não Encontrado");
-        }
 
         if (leitura == null)
         {
@@ -254,7 +169,6 @@ public class LeiturasController : ControllerBase
         }
 
         _context.Leituras.Remove(leitura);
-        _context.Itens.Remove(item);
 
         await _context.SaveChangesAsync();
 
